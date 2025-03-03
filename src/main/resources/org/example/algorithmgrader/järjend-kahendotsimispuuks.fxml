@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Button?>
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.algorithmgrader.Controllers.JärjendKahendotsimispuuks">
+    <Label fx:id="järgmineTippLabel" layoutX="20" layoutY="10" style="-fx-font-size: 16px;"/>
+    <Label fx:id="järgmisedTipudLabel" layoutX="200" layoutY="10" style="-fx-font-size: 16px;"/>
+    <Button text="Lisa järgmine tipp" onAction="#järgmineLisatavTipp" layoutX="10" layoutY="40"/>
+    <Button fx:id="laeUusPuu" layoutX="50" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
+
+    <Pane fx:id="kahendpuuAla" layoutX="5.0" layoutY="143.0" prefHeight="520.0" prefWidth="890.0"
+          style="-fx-border-color:black; -fx-border-width:2; -fx-border-style:solid" />
+</AnchorPane>
