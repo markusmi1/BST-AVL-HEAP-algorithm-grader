@@ -1,1 +1,2 @@
-# BST-AVL-HEAP-algorithm-grader
+# Kahendotsimispuu- ja kuhjaalgoritmide läbimängija ka hindaja
+
