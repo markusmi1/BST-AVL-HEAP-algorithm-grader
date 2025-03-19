@@ -6,13 +6,27 @@
 
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.shape.Circle?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.example.algorithmgrader.Controllers.JärjendKahendotsimispuuks">
-    <Label fx:id="järgmineTippLabel" layoutX="20" layoutY="10" style="-fx-font-size: 16px;"/>
-    <Label fx:id="järgmisedTipudLabel" layoutX="200" layoutY="10" style="-fx-font-size: 16px;"/>
-    <Button text="Lisa järgmine tipp" onAction="#järgmineLisatavTipp" layoutX="10" layoutY="40"/>
-    <Button fx:id="laeUusPuu" layoutX="50" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
+    <Label fx:id="järgmineTippLabel" layoutX="20" layoutY="20" style="-fx-font-size: 15px;"/>
+    <Label fx:id="järgmisedTipudLabel" layoutX="20" layoutY="45" style="-fx-font-size: 14px;"/>
+    <Button fx:id="laeUusPuu" layoutX="20" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
+    <Button fx:id="eelminePuuOlek" layoutX="105" layoutY="70" text="Eelmine puu olek" onMouseClicked="#laeEelnevPuu"/>
+    <Button  fx:id="lukustaPuu" text="Lukusta puu olek ja Lisa järgmine tipp" onAction="#lukustaPuuOlek" layoutX="20" layoutY="100" visible="false"/>
+    <Label fx:id="juhend" layoutX="400" layoutY="5" wrapText="true" prefWidth="500" style="-fx-font-size: 13px;"></Label>
+
+    <Pane layoutX="650" layoutY="5">
+        <Circle radius="15" layoutX="10" layoutY="13"  fill="lightgray"/>
+        <Label layoutX="35" layoutY="5" text="Pesa, 1 klikk lisab hetkel lisatava tipu"/>
+
+        <Circle radius="20" layoutX="10" layoutY="55"  fill="gray"/>
+        <Label layoutX="35" layoutY="47" text="Tipp, 1 klikk muudab aktiivseks"/>
+
+        <Circle radius="20" layoutX="10" layoutY="100"  fill="green"/>
+        <Label layoutX="35" layoutY="93" text="Aktiivne tipp, kuvab pesad"/>
+    </Pane>
 
     <Pane fx:id="kahendpuuAla" layoutX="5.0" layoutY="143.0" prefHeight="520.0" prefWidth="890.0"
           style="-fx-border-color:black; -fx-border-width:2; -fx-border-style:solid" />

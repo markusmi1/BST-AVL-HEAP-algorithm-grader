@@ -17,19 +17,7 @@ public class HelloController {
 
         });
         eemaldamine_BST.setOnSelectionChanged(e -> {
-            if (eemaldamine_BST.isSelected()) {
-                Dialog<Void> dialog = new Dialog<>();//TODO: meetodiks teha
-                dialog.setContentText("");
-                dialog.setTitle("");
-                dialog.getDialogPane()
-                        .getScene()
-                        .getWindow()
-                        .setOnCloseRequest(f -> {
-                            dialog.hide();
-                        });
-                Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-                dialog.showAndWait();
-            };
+
         });
     }
 }

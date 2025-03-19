@@ -11,10 +11,6 @@ import javafx.scene.shape.Path;
  */
 public class Arrow extends Path{
     private static final double arrowHeadSize = 5.0;
-    private double startX;
-    private double startY;
-    private double endX;
-    private double endY;
     public Arrow(double startX, double startY, double endX, double endY){
         super();
         strokeProperty().bind(fillProperty());
@@ -25,15 +21,15 @@ public class Arrow extends Path{
         double sin = Math.sin(angle);
         double cos = Math.cos(angle);
 
-        startX += 31 * cos;
-        startY += 31 * sin;
+        startX += 28 * cos;
+        startY += 28 * sin;
 
         double angle2 = angle - Math.PI;
         double sin2 = Math.sin(angle2);
         double cos2 = Math.cos(angle2);
 
-        endX += 31 * cos2;
-        endY += 31 * sin2;
+        endX += 28 * cos2;
+        endY += 28 * sin2;
 
         getElements().add(new MoveTo(startX , startY));
         getElements().add(new LineTo(endX, endY));
@@ -51,19 +47,4 @@ public class Arrow extends Path{
         getElements().add(new LineTo(endX, endY));
     }
 
-    public void setEndX(double endX) {
-        this.endX = endX;
-    }
-
-    public void setEndY(double endY) {
-        this.endY = endY;
-    }
-
-    public void setStartX(double startX) {
-        this.startX = startX;
-    }
-
-    public void setStartY(double startY) {
-        this.startY = startY;
-    }
 }
