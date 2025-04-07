@@ -5,6 +5,7 @@ public class Tipp {
     public Tipp vasak;
     public Tipp parem;
     public VisuaalneTipp visuaalneTipp;
+    public int tase = 0;
     public Tipp(int väärtus, Tipp v, Tipp p) {
         this.väärtus = väärtus;
         this.vasak = v;

@@ -11,13 +11,16 @@
             fx:controller="org.example.algorithmgrader.Controllers.ElemendiEemaldamineBST">
     <Label fx:id="eemaldatav" layoutX="20" layoutY="20" style="-fx-font-size: 15px;"/>
     <Label fx:id="eemaldatavadLabel" layoutX="20" layoutY="45" style="-fx-font-size: 14px;"/>
+
     <Button fx:id="laeUusPuu" layoutX="20" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
     <Button fx:id="lukustaPuu" layoutX="20" layoutY="100" text="Lukusta puu olek" onMouseClicked="#lukustaPuuOlek"/>
     <Button fx:id="kustutaTipp" layoutX="238" layoutY="70" text="Kustuta tipp" visible="false"/>
     <Button fx:id="eelnevaLukustusePuu" layoutX="105" layoutY="70" text="Lae eelmine puu olek" onMouseClicked="#laeEelnevPuu"/>
     <Button fx:id="lisaParemAlluv" layoutX="265" layoutY="100" text="Lisa paremaks alluvaks" visible="false"/>
     <Button fx:id="lisaVasakAlluv" layoutX="130" layoutY="100" text="Lisa vasakuks alluvaks" visible="false"/>
+
     <Label fx:id="juhend" layoutX="410" layoutY="10" wrapText="true" prefWidth="500" style="-fx-font-size: 13px;"></Label>
+
     <Pane fx:id="kahendpuuAla" layoutX="5.0" layoutY="143.0" prefHeight="520.0" prefWidth="890.0"
           style="-fx-border-color:black; -fx-border-width:2; -fx-border-style:solid" />
 </AnchorPane>

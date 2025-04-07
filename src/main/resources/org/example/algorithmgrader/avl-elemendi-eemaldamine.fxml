@@ -8,7 +8,11 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.algorithmgrader.AvlElemendiEemaldamine"
+            fx:controller="org.example.algorithmgrader.Controllers.AvlElemendiEemaldamine"
             prefHeight="400.0" prefWidth="600.0">
 
+
+
+    <Pane fx:id="kahendpuuAla" layoutX="5.0" layoutY="143.0" prefHeight="520.0" prefWidth="890.0"
+          style="-fx-border-color:black; -fx-border-width:2; -fx-border-style:solid" />
 </AnchorPane>

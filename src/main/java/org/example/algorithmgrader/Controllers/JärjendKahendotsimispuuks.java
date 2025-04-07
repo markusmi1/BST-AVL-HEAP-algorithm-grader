@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -87,70 +88,10 @@ public class JärjendKahendotsimispuuks {
             pesaEventHandler(null, juurPesa, true);
             pesad.add(juurPesa);
             kahendpuuAla.getChildren().add(juurPesa);
-        }/*else {
-            for (VisuaalneTipp vt : visuaalsedTipud) {
-                if (vt.tipp.vasak==null || vt.tipp.vasak==puu.viimatiLisatudTipp){
-                    VisuaalneTipp vasakPesa = new VisuaalneTipp(vt.getCenterX() - pesaX, vt.getCenterY() + pesaY, pesaRaadius, null);
-
-                    vasakPesa.setFill(Color.LIGHTGRAY);
-
-                    pesaEventHandler(vasakPesa, true);
-
-                    pesad.add(vasakPesa);
-                    kahendpuuAla.getChildren().addAll(vasakPesa);
-
-                    if(vt.tipp == puu.getVanem(puu.juurtipp, puu.viimatiLisatudTipp) && vt.tipp.väärtus > puu.viimatiLisatudTipp.väärtus) {
-                        System.out.println("sobib vasak");
-                        vasakPesa.tipp = praeguneTipp;
-                        pesad.remove(vasakPesa);
-                    }
-                    vt.centerXProperty().addListener((obs, oldX, newX) -> vasakPesa.setCenterX(((double) newX) -pesaX));
-                    vt.centerYProperty().addListener((obs, oldY, newY) -> vasakPesa.setCenterY(((double) newY) + pesaY));
-
-                }
-                if ((vt.tipp.parem) == null || vt.tipp.parem==puu.viimatiLisatudTipp){
-                    VisuaalneTipp paremPesa = new VisuaalneTipp(vt.getCenterX() + pesaX, vt.getCenterY() + pesaY, pesaRaadius, null);
-
-                    paremPesa.setFill(Color.LIGHTGRAY);
-
-                    pesaEventHandler(paremPesa, false);
-
-                    pesad.add(paremPesa);
-                    kahendpuuAla.getChildren().addAll(paremPesa);
-
-                    if(vt.tipp == puu.getVanem(puu.juurtipp, puu.viimatiLisatudTipp) && vt.tipp.väärtus <= puu.viimatiLisatudTipp.väärtus){
-                        System.out.println("sobib parem");
-                        System.out.println();
-                        paremPesa.tipp=praeguneTipp;
-                        pesad.remove(paremPesa);
-                    }
-                    vt.centerXProperty().addListener((obs, oldX, newX) -> paremPesa.setCenterX(((double) newX) +pesaX));
-                    vt.centerYProperty().addListener((obs, oldY, newY) -> paremPesa.setCenterY(((double) newY) + pesaY));
-
-                }
-            }
-            uuendaNooli();
-        }*/
+        }
     }
     public void pesaEventHandler(Tipp tipp, VisuaalneTipp pesa, boolean vasak){
         pesa.setOnMouseClicked(e->{
-            /*if(visuaalsedTipud.isEmpty() || pesa.tipp == praeguneTipp) {
-                VisuaalneTipp visuaalneTipp = new VisuaalneTipp(pesa.getCenterX(), pesa.getCenterY(), tipuRaadius, praeguneTipp);
-                lisaTipp(visuaalneTipp, pesa, vasak);
-                järjend.remove(0);
-                järgmineLisatavTipp();
-                if (!järjend.isEmpty())
-                    looPesad(visuaalneTipp);
-                else
-                    kahendpuuAla.getChildren().removeAll(pesad);
-
-                uuendaNooli();
-            }else{
-                kuvaTeade("Viga", "Vale koht");
-                logiViga("Vale koht\n");
-                vigu++;
-            }*/
-
             Tipp lisatav = new Tipp(praeguneTipp.väärtus);
             VisuaalneTipp visuaalneTipp = new VisuaalneTipp(pesa.getCenterX(), pesa.getCenterY(), tipuRaadius, lisatav);
             if (puu.juurtipp == praeguneTipp) {
@@ -213,7 +154,7 @@ public class JärjendKahendotsimispuuks {
             lisatud=false;
 
             praeguneTipp = järjend.get(0);
-            puu.lisa(praeguneTipp);
+            puu.lisa(praeguneTipp, false);
 
             järgmineTippLabel.setText("Lisatav tipp: " + (järjend.isEmpty() ? "Kõik lisatud" : järjend.get(0).getVäärtus()));
             järgmisedTipudLabel.setText(järjend.subList(1,järjend.size()).toString());
@@ -257,7 +198,7 @@ public class JärjendKahendotsimispuuks {
         });
         grupp.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             if (e.getClickCount() == 1) {
-
+                StringBuilder inputText = new StringBuilder(tekst.getText());
                 if (visuaalneTipp.getFill()==Color.GREEN && !lisatud){
                     aktiivsedTipud.remove(tipp);
                     kahendpuuAla.getChildren().removeAll(pesad);
@@ -305,7 +246,33 @@ public class JärjendKahendotsimispuuks {
                 } else if (aktiivsedTipud.size()==1) {
                     kuvaTeade("","Korraga saab valida ühe tipu");
                 }
+                grupp.requestFocus();
+                grupp.addEventHandler(KeyEvent.KEY_TYPED, keyEvent ->  {
 
+                    if (visuaalneTipp.getFill()==Color.GREEN) {
+                        //hetkelMuudetakseTippu = true;
+                        String input = keyEvent.getCharacter();
+                        if (input.matches("\\d") && inputText.length() < 3) {
+                            inputText.append(input);
+                            tekst.setText(inputText.toString());
+                        } else if (input.matches("\b") && !inputText.isEmpty()) {
+                            inputText.deleteCharAt(inputText.length() - 1);
+                            tekst.setText(inputText.toString());
+                        } else if (input.equals("\r") || input.equals("\n")) {
+                            if (!inputText.isEmpty()) {
+                                visuaalneTipp.väärtus = (Integer.parseInt(inputText.toString()));
+                                tipp.väärtus = (Integer.parseInt(inputText.toString()));
+                                visuaalneTipp.setFill(Color.GRAY);
+                            }
+                            // grupp.removeEventHandler(KeyEvent.KEY_TYPED, keyEvent);
+                            //hetkelMuudetakseTippu = false;
+                            aktiivsedTipud.remove(tipp);
+
+                            keyEvent.consume();
+                        }
+                    }
+
+                });
                 uuendaNooli();
 
             }
@@ -349,6 +316,7 @@ public class JärjendKahendotsimispuuks {
         kahendpuuAla.getChildren().addAll(nooled);
     }
     public void lukustaPuuOlek(){
+        System.out.println(visuaalnePuu.juurtipp);
         if(visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true)) {
             if(kasPuudOnSamad(puu.juurtipp, visuaalnePuu.juurtipp)){
                 eelnevaSeisugaPuu = new Kahendotsimispuu();
@@ -360,6 +328,17 @@ public class JärjendKahendotsimispuuks {
                 visuaalnePuu.printPuuJaVisuaalnePuu(visuaalnePuu.juurtipp);
                 järjend.remove(0);
                 ilusPuu();
+                järgmineLisatavTipp();
+            }else {
+                System.out.println("\n");
+                puu.printPuuJaVisuaalnePuu(puu.juurtipp);
+                System.out.println("\n");
+                visuaalnePuu.printPuuJaVisuaalnePuu(visuaalnePuu.juurtipp);
+                kuvaTeade("","Ebakorrektne lisamine, kuid on säilitatud kahendotsimispuu");
+                Logija.logiViga("Lisamine ebakorrektne, kahendotsimispuu säilis\n", "järjend_kahendotsimispuuks");
+                järjend.remove(0);
+                ilusPuu();
+                //TODO logi viga
                 järgmineLisatavTipp();
             }
         }else {
@@ -430,7 +409,7 @@ public class JärjendKahendotsimispuuks {
     private void puudSamaks(Kahendotsimispuu p, Tipp vTipp){
         if(vTipp==null)
             return;
-        p.lisa(new Tipp(vTipp.väärtus));
+        p.lisa(new Tipp(vTipp.väärtus), false);
         puudSamaks(p, vTipp.vasak);
         puudSamaks(p, vTipp.parem);
 

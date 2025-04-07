@@ -15,4 +15,10 @@
   <Tab fx:id="eemaldamine_BST" text="Elemendi eemaldamine kahendotsimispuust">
     <fx:include source="eemaldamine-kahendotsimispuust.fxml"/>
   </Tab>
+  <Tab fx:id="lisamineAvl" text="Elemendi lisamine AVL-puusse">
+    <fx:include source="avl-elemendi-lismine.fxml"/>
+  </Tab>
+  <Tab fx:id="eemaldamineAvl" text="Elemendi eemaldamine AVL-puust">
+    <fx:include source="avl-elemendi-eemaldamine.fxml"/>
+  </Tab>
 </TabPane>

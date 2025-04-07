@@ -90,7 +90,6 @@ public class ElemendiEemaldamineBST {
     public void ilusPuu(){
         kahendpuuAla.getChildren().clear();
         looVisuaalnePuu(visuaalnePuu.juurtipp, 1, JUURE_X, JUURE_Y, true);
-
     }
     public void laeEelnevPuu(){
         visuaalnePuu = new Kahendotsimispuu();
@@ -125,8 +124,8 @@ public class ElemendiEemaldamineBST {
             int puuIndeks = järjendid.indexOf("[");
             int puuLõppIndeks = järjendid.indexOf("]");
             for (String väärtus : järjendid.substring(puuIndeks+1, puuLõppIndeks).split(",\s++")) {
-                puu.lisa(new Tipp(Integer.parseInt(väärtus)));
-                visuaalnePuu.lisa(new Tipp(Integer.parseInt(väärtus)));
+                puu.lisa(new Tipp(Integer.parseInt(väärtus)), false);
+                visuaalnePuu.lisa(new Tipp(Integer.parseInt(väärtus)), false);
             }
 
             String järjend2 = järjendid.substring(puuLõppIndeks+1);
@@ -202,7 +201,7 @@ public class ElemendiEemaldamineBST {
                     kustutaTipp.setVisible(false);
                     return;
                 }
-                if ((visuaalneTipp.getFill()==Color.GREEN || visuaalneTipp.getFill()==Color.RED)&&!hetkelMuudetakseTippu){
+                if ((visuaalneTipp.getFill()==Color.GREEN || visuaalneTipp.getFill()==Color.RED)/*&&!hetkelMuudetakseTippu*/){
                     if(aktiivsedTipud.size()==1) {
                         kustutaTipp.setVisible(false);
                     }else if (aktiivsedTipud.size()==2 && visuaalneTipp.getFill()==Color.RED && puuElementideArv == visuaalnePuu.puuElementideArv(visuaalnePuu.juurtipp)) {
@@ -216,20 +215,27 @@ public class ElemendiEemaldamineBST {
                 }
                 if (aktiivsedTipud.size()<2 && !hetkelMuudetakseTippu){
                     aktiivsedTipud.add(tipp);
-                    if (aktiivsedTipud.size()==1)
+                    if (aktiivsedTipud.size()==1) {
+                        visuaalneTipp.setFill(Color.GREEN);
                         if (puuElementideArv == visuaalnePuu.puuElementideArv(visuaalnePuu.juurtipp))
                             kustutaTipp.setVisible(true);
-                    else {
+                    } else if (aktiivsedTipud.get(0).visuaalneTipp.getFill()==Color.GREEN) {
+                        visuaalneTipp.setFill(Color.RED);
+                        lisaVasakAlluv.setVisible(true);
+                        lisaParemAlluv.setVisible(true);
+                        kustutaTipp.setVisible(false);
+                    } else {
+                        visuaalneTipp.setFill(Color.GREEN);
                         kustutaTipp.setVisible(false);
                         lisaVasakAlluv.setVisible(true);
                         lisaParemAlluv.setVisible(true);
                     }
                 }else{
-                    kuvaTeade("P", "Maksimaalselt korraga saab valida 2 tippu!");
+                    kuvaTeade("Info", "Maksimaalselt korraga saab valida 2 tippu!");
                     return;
                 }
                 grupp.requestFocus();
-                if(aktiivsedTipud.size()==1) {
+                /*if(aktiivsedTipud.size()==1) {
                     visuaalneTipp.setFill(Color.GREEN);
                     if (puuElementideArv == visuaalnePuu.puuElementideArv(visuaalnePuu.juurtipp))
                         kustutaTipp.setVisible(true);
@@ -243,7 +249,7 @@ public class ElemendiEemaldamineBST {
                     lisaVasakAlluv.setVisible(true);
                     lisaParemAlluv.setVisible(true);
                     kustutaTipp.setVisible(false);
-                }
+                }*/
 
                 grupp.addEventHandler(KeyEvent.KEY_TYPED, keyEvent ->  {
                         if (visuaalneTipp.getFill()==Color.GREEN) {
@@ -501,7 +507,7 @@ public class ElemendiEemaldamineBST {
     private void puudSamaks(Kahendotsimispuu p, Tipp vTipp){
         if(vTipp==null)
             return;
-        p.lisa(new Tipp(vTipp.väärtus));
+        p.lisa(new Tipp(vTipp.väärtus), false);
         puudSamaks(p, vTipp.vasak);
         puudSamaks(p, vTipp.parem);
 

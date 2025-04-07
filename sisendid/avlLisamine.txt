@@ -1,0 +1,1 @@
+AVL-puu järjend: [19, 37, 40, 57, 64, 72, 80, 85, 88, 98]      Lisatavad elemendid: [85, 86, 87]

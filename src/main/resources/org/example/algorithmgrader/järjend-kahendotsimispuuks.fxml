@@ -12,9 +12,11 @@
             fx:controller="org.example.algorithmgrader.Controllers.JärjendKahendotsimispuuks">
     <Label fx:id="järgmineTippLabel" layoutX="20" layoutY="20" style="-fx-font-size: 15px;"/>
     <Label fx:id="järgmisedTipudLabel" layoutX="20" layoutY="45" style="-fx-font-size: 14px;"/>
+
     <Button fx:id="laeUusPuu" layoutX="20" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
     <Button fx:id="eelminePuuOlek" layoutX="105" layoutY="70" text="Eelmine puu olek" onMouseClicked="#laeEelnevPuu"/>
     <Button  fx:id="lukustaPuu" text="Lukusta puu olek ja Lisa järgmine tipp" onAction="#lukustaPuuOlek" layoutX="20" layoutY="100" visible="false"/>
+
     <Label fx:id="juhend" layoutX="400" layoutY="5" wrapText="true" prefWidth="500" style="-fx-font-size: 13px;"></Label>
 
     <Pane layoutX="650" layoutY="5">
