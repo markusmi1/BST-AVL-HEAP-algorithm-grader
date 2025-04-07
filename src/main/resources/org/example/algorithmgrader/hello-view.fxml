@@ -21,4 +21,10 @@
   <Tab fx:id="eemaldamineAvl" text="Elemendi eemaldamine AVL-puust">
     <fx:include source="avl-elemendi-eemaldamine.fxml"/>
   </Tab>
+  <Tab fx:id="järjendiKuhjastamine" text="Järjendi kuhjastamine">
+    <fx:include source="järjendi-kuhjastamine.fxml"/>
+  </Tab>
+  <Tab fx:id="kuhjaMeetod" text="Kuhjameetod">
+    <fx:include source="kuhjameetod.fxml"/>
+  </Tab>
 </TabPane>

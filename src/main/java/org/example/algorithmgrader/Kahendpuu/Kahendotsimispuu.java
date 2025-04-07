@@ -11,7 +11,7 @@ public class Kahendotsimispuu {
 
 
     public void lisa(Tipp uusTipp, boolean avl) {
-        juurtipp= lisaRekursiivselt(juurtipp, uusTipp, avl);
+        juurtipp = lisaRekursiivselt(juurtipp, uusTipp, avl);
     }
 
 
@@ -78,13 +78,16 @@ public class Kahendotsimispuu {
             return 0;
         return 1+puuElementideArv(tipp.vasak)+puuElementideArv(tipp.parem);
     }
-    public Tipp eemaldaTipp(Tipp juur, int eemaldatav){
+    public void eemaldaTipp(int eemaldatav, boolean avl){
+        juurtipp = eemaldaTipp(juurtipp, eemaldatav, avl);
+    }
+    public Tipp eemaldaTipp(Tipp juur, int eemaldatav, boolean avl){
         if (juur == null)
             return null;
         if (juur.väärtus > eemaldatav) {
-            juur.vasak=eemaldaTipp(juur.vasak, eemaldatav);
+            juur.vasak=eemaldaTipp(juur.vasak, eemaldatav, avl);
         } else if (juur.väärtus < eemaldatav) {
-            juur.parem=eemaldaTipp(juur.parem, eemaldatav);
+            juur.parem=eemaldaTipp(juur.parem, eemaldatav, avl);
         } else {
             if (juur.vasak==null && juur.parem==null)
                 return null;
@@ -96,10 +99,10 @@ public class Kahendotsimispuu {
             }else {
                 Tipp järgnev = leiaJärgnev(juur.parem);
                 juur.väärtus = järgnev.väärtus;
-                juur.parem = eemaldaTipp(juur.parem, järgnev.väärtus);
+                juur.parem = eemaldaTipp(juur.parem, järgnev.väärtus, avl);
             }
         }
-        return juur;
+        return avl ? tasakaalustaPuu(juur) : juur;
     }
     public int leiaTipuTase(Tipp juur, Tipp otsitav){
         if (juur == null)

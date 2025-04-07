@@ -77,6 +77,7 @@ public class ElemendiEemaldamineBST {
         kahendpuuAla.getChildren().clear();
         eemaldatavad.clear();
         visuaalsedTipud.clear();
+        aktiivsedTipud.clear();
         puu = new Kahendotsimispuu();
         visuaalnePuu = new Kahendotsimispuu();
 
@@ -145,7 +146,7 @@ public class ElemendiEemaldamineBST {
             eelnevaSeisugaPuu = new Kahendotsimispuu();
             puudSamaks(eelnevaSeisugaPuu, puu.juurtipp);
             puuElementideArv = puu.puuElementideArv(puu.juurtipp);
-            puu.eemaldaTipp(puu.juurtipp, eemaldatavad.get(0));
+            puu.eemaldaTipp(puu.juurtipp, eemaldatavad.get(0), false);
 
             puu.printPuuJaVisuaalnePuu(puu.juurtipp);
 
@@ -448,8 +449,6 @@ public class ElemendiEemaldamineBST {
                         vt.tipp.parem.visuaalneTipp.getCenterX(), vt.tipp.parem.visuaalneTipp.getCenterY()
                 );
                 nooled.add(nool);
-            }else if(vt.tipp.parem!=null &&vt.tipp.parem.visuaalneTipp!=null){
-
             }
             if (vt.tipp.vasak != null && vt.tipp.vasak.visuaalneTipp!=null && visuaalsedTipud.contains(vt.tipp.vasak.visuaalneTipp)){
                 Arrow nool = new Arrow(

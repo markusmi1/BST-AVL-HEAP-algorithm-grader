@@ -61,3 +61,5 @@ Eemaldus lisamine, puu ei ole enam kahendotsimispuu
 Üritati lisada ülemaga tippu alluvaks
 Eemaldus lisamine, puu ei ole enam kahendotsimispuu
 
+Eemaldus lisamine, puu ei ole enam kahendotsimispuu
+

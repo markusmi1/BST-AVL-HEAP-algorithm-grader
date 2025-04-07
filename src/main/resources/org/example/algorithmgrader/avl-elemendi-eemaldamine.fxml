@@ -11,6 +11,18 @@
             fx:controller="org.example.algorithmgrader.Controllers.AvlElemendiEemaldamine"
             prefHeight="400.0" prefWidth="600.0">
 
+    <Label fx:id="eemaldatav" layoutX="20" layoutY="20" style="-fx-font-size: 15px;"/>
+    <Label fx:id="eemaldatavLabel" layoutX="20" layoutY="45" style="-fx-font-size: 14px;"/>
+
+    <Button fx:id="laeUusPuu" layoutX="20" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
+    <Button fx:id="lisaVasakAlluv" layoutX="105" layoutY="70" text="Lisa vasakuks alluvaks" visible="false"/>
+    <Button fx:id="lisaParemAlluv" layoutX="240" layoutY="70" text="Lisa paremaks alluvaks" visible="false"/>
+
+    <Button fx:id="lukustaPuu" layoutX="20" layoutY="100" text="Lukusta puu olek" onMouseClicked="#lukustaPuuOlek"/>
+    <Button fx:id="eemaldaVasakAlluv" layoutX="130" layoutY="100" text="Eemalda seos Vasaku alluvaga" visible="false"/>
+    <Button fx:id="eemaldaParemAlluv" layoutX="310" layoutY="100" text="Eemalda seos Parema alluvaga" visible="false"/>
+    <Button fx:id="kustutaTipp" layoutX="490" layoutY="100" text="Kustuta tipp" visible="false"/>
+
 
 
     <Pane fx:id="kahendpuuAla" layoutX="5.0" layoutY="143.0" prefHeight="520.0" prefWidth="890.0"

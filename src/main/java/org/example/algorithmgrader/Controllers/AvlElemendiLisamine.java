@@ -111,16 +111,8 @@ public class AvlElemendiLisamine {
     }
     public void ilusPuu(){
         kahendpuuAla.getChildren().clear();
-        int mituPuud = 0;
-       /* for (Tipp tipp : metsaJuurtipud) {
-            if (tipp == visuaalnePuu.juurtipp) {*/
-                looVisuaalnePuu(visuaalnePuu.juurtipp, 1, JUURE_X, JUURE_Y, true);
-            /*}
-            else{
-                looVisuaalnePuu(tipp, 1, );
-            }
-        }*/
 
+        looVisuaalnePuu(visuaalnePuu.juurtipp, 1, JUURE_X, JUURE_Y, true);
     }
     public void järgmineLisatav(){
         if (!lisatavad.isEmpty()) {
@@ -302,7 +294,8 @@ public class AvlElemendiLisamine {
                     if (aktiivsedTipud.isEmpty()){
                         kahendpuuAla.getChildren().removeAll(pesad);
                         pesad.clear();
-
+                        eemaldaVasakAlluv.setVisible(false);
+                        eemaldaParemAlluv.setVisible(false);
                         uuendaNooli();
                     } else if (aktiivsedTipud.get(0).visuaalneTipp.getFill()==Color.GREEN){
                         looPesad(aktiivsedTipud.get(0), aktiivsedTipud.get(0).visuaalneTipp);
@@ -563,14 +556,42 @@ public class AvlElemendiLisamine {
     }
     private void eemaldaSeosVasakuAlluvaga(Tipp tipp){
         Tipp uus = tipp.vasak;
-        uus.tase = visuaalnePuu.leiaTipuTase(visuaalnePuu.juurtipp, tipp.vasak);
+        Tipp vanem = null;
+        Tipp juur = null;
+        for (Tipp j : metsaJuurtipud) {
+            vanem = visuaalnePuu.getVanemKahendpuu(j, tipp.vasak);
+            juur = j;
+            if (vanem != null) {
+                //normaalseks puu kuvamiseks
+                uus.tase=-1;
+                break;
+            }
+        }
+        if (vanem==null) {
+            juur = visuaalnePuu.juurtipp;
+        }
+        uus.tase += juur.tase+visuaalnePuu.leiaTipuTase(juur, tipp.vasak);
         tipp.vasak = null;
 
         metsaJuurtipud.add(uus);
     }
     private void eemaldaSeosParemaAlluvaga(Tipp tipp){
         Tipp uus = tipp.parem;
-        uus.tase = visuaalnePuu.leiaTipuTase(visuaalnePuu.juurtipp, tipp.parem);
+        Tipp vanem = null;
+        Tipp juur = null;
+        for (Tipp j : metsaJuurtipud) {
+            vanem = visuaalnePuu.getVanemKahendpuu(j, tipp.parem);
+            juur = j;
+            if (vanem != null) {
+                //normaalseks puu kuvamiseks
+                uus.tase=-1;
+                break;
+            }
+        }
+        if (vanem==null) {
+            juur = visuaalnePuu.juurtipp;
+        }
+        uus.tase += juur.tase+visuaalnePuu.leiaTipuTase(juur, tipp.parem);
         tipp.parem = null;
 
         metsaJuurtipud.add(uus);

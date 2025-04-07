@@ -1,0 +1,18 @@
+Üritati lisada ülemaga tippu alluvaks
+Üritati lisada ülemaga tippu alluvaks
+AVL eemaldamine ebakorrektne, kahendotsimispuu säilis
+
+Üritati eemaldad juurtippu
+Eemaldus eemaldamine, puu ei ole enam kahendotsimispuu
+
+Üritati lisada ülemaga tippu alluvaks
+AVL eemaldamine ebakorrektne, kahendotsimispuu säilis
+
+AVL eemaldamine ebakorrektne, kahendotsimispuu säilis
+
+AVL eemaldamine ebakorrektne, kahendotsimispuu säilis
+
+AVL eemaldamine ebakorrektne, kahendotsimispuu säilis
+
+Üritati eemaldad juurtippu
+Üritati eemaldad juurtippu

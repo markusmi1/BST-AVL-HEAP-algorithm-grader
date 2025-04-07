@@ -242,3 +242,6 @@ Lisamine ebakorrektne, andmestruktuur ei ole enam kahendotsimispuu
 
 Lisamine ebakorrektne, andmestruktuur ei ole enam kahendotsimispuu
 
+
+Vigu: 0
+
