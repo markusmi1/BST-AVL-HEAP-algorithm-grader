@@ -1,5 +1,6 @@
 package org.example.algorithmgrader.Controllers;
 
+import static org.example.algorithmgrader.Util.Koordinaadid.*;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
@@ -31,7 +32,11 @@ public class AvlElemendiLisamine {
     @FXML
     private Label lisatavadLabel;
     @FXML
+    private Label juhend;
+    @FXML
     private Button lukustaPuu;
+    @FXML
+    private Button laeUusPuu;
     @FXML
     private Button eemaldaVasakAlluv;
     @FXML
@@ -40,6 +45,8 @@ public class AvlElemendiLisamine {
     private Button lisaParemAlluv;
     @FXML
     private Button lisaVasakAlluv;
+    @FXML
+    private Button laeEelnevPuu;
     private Kahendotsimispuu puu;
     private Kahendotsimispuu visuaalnePuu;
     private Kahendotsimispuu eelnevaSeisugaPuu;
@@ -49,24 +56,25 @@ public class AvlElemendiLisamine {
     private List<Integer> lisatavad = new ArrayList<>();
     private List<VisuaalneTipp> pesad = new ArrayList<>();
     private List<Tipp> metsaJuurtipud = new ArrayList<>();
+    private List<String> vead;
+    private int vigu;
     private int puuElementideArv;
     private boolean hetkelMuudetakseTippu = false;
     private boolean lisatud;
-    private final int JUURE_X = 400;
-    private final int JUURE_Y = 25;
-    private final int tipuRaadius = 20;
-    private final int pesaX = 40;
-    private final int pesaY = 50;
-    private  final int pesaRaadius = 15;
+    private final String logiFail = "avl_lisamine_logi.txt";
+    private final String sisendFail = "sisendid/avlLisamine.txt";
     private void loeFailistVäärtusedJaLooAlgnePuu(String failitee) {
         try {
             List<String> sisu = Files.readAllLines(Path.of(failitee));
             String järjendid = sisu.get(0);
+            vigu=0;
+            vead.add("Sisend:\n" + järjendid);
+
             List<Integer> sorteeritudList = new ArrayList<>();
             int puuIndeks = järjendid.indexOf("[");
             int puuLõppIndeks = järjendid.indexOf("]");
-            for (String väärtus : järjendid.substring(puuIndeks+1, puuLõppIndeks).split(",\s++")) {
-                sorteeritudList.add(Integer.parseInt(väärtus));
+            for (String väärtus : järjendid.substring(puuIndeks+1, puuLõppIndeks).split(",")) {
+                sorteeritudList.add(Integer.parseInt(väärtus.strip()));
             }
             //loome Kahendotsimispuud sorteeritud listiga
             puu.listAvlPuuks(sorteeritudList);
@@ -76,8 +84,8 @@ public class AvlElemendiLisamine {
             int lisatavadIndeks = järjend2.indexOf("[");
             int lisatavadLõppIndeks = järjend2.indexOf("]");
 
-            for (String väärtus : järjend2.substring(lisatavadIndeks+1, lisatavadLõppIndeks).split(",\s++")) {
-                lisatavad.add(Integer.parseInt(väärtus));
+            for (String väärtus : järjend2.substring(lisatavadIndeks+1, lisatavadLõppIndeks).split(",")) {
+                lisatavad.add(Integer.parseInt(väärtus.strip()));
             }
 
         } catch (IOException e) {
@@ -85,12 +93,11 @@ public class AvlElemendiLisamine {
         }
     }
     public void laePuu() {
-        /*juhend.setText("Kasutusjuhend:\n" +
-                "- Lukusta puu olek: Kontrollib kas tipp on eemaldatud korrektselt\n    ja võtab eemaldatavate järjendist uue tipu.\n" +
-                "- Lae uus puu" + ": Algatab uue puu.\n" +
-                "- Lae eelmine puu olek: Laeb viimati lukustatud puu.\n" +
-                "- 1 klikk tipul: Muudab tipu aktiivseks, korraga saab valida kokku 2 tippu.\n" +
-                "- Lisa vasak/parem alluv: Lisab punase tipu rohelise vasakuks/paremaks alluvaks.\n");*/
+        juhend.setText("Kasutusjuhend:\n" +
+                "- Kontrolli lisamist: Kontrollib tipu lisamise sammu\n" +
+                "- Lae eelmine puu olek: Laeb viimati kontrollitud puu\n" +
+                "- Eemalda seos alluvaga: Eemaldab seose vasku/parema alluvaga\n" +
+                "- Lisa vasak/parem alluv: Lisab punase tipu rohelise tipu vasakuks/paremaks alluvaks\n");
 
 
         kahendpuuAla.getChildren().clear();
@@ -100,14 +107,16 @@ public class AvlElemendiLisamine {
         metsaJuurtipud.clear();
         puu = new Kahendotsimispuu();
         visuaalnePuu = new Kahendotsimispuu();
+        vead = new ArrayList<>();
 
-        loeFailistVäärtusedJaLooAlgnePuu("sisendid/avlLisamine.txt");
+        loeFailistVäärtusedJaLooAlgnePuu(sisendFail);
 
         looVisuaalnePuu(visuaalnePuu.juurtipp, 1, JUURE_X, JUURE_Y, true);
         uuendaNooli();
         metsaJuurtipud.add(visuaalnePuu.juurtipp);
 
         järgmineLisatav();
+        laeUusPuu.setVisible(false);
     }
     public void ilusPuu(){
         kahendpuuAla.getChildren().clear();
@@ -115,26 +124,30 @@ public class AvlElemendiLisamine {
         looVisuaalnePuu(visuaalnePuu.juurtipp, 1, JUURE_X, JUURE_Y, true);
     }
     public void järgmineLisatav(){
+        lukustaPuu.setVisible(false);
+        laeEelnevPuu.setVisible(false);
         if (!lisatavad.isEmpty()) {
             eelnevaSeisugaPuu = new Kahendotsimispuu();
             puudSamaks(eelnevaSeisugaPuu, puu.juurtipp);
-            //lukustaPuu.setVisible(false);
+
             lisatud=false;
 
             praeguneTipp = new Tipp(lisatavad.get(0));
             puu.lisa(praeguneTipp, true);
 
-            lisatav.setText("Lisatav tipp: " + (lisatavad.isEmpty() ? "Kõik lisatud" : lisatavad.get(0)));
-            lisatavadLabel.setText(lisatavad.subList(1,lisatavad.size()).toString());
-            lisatavad.remove(0);
+            lisatav.setText("Lisa AVL-puusse: " + (lisatavad.isEmpty() ? "Kõik lisatud" : lisatavad.get(0)));
+            lisatavadLabel.setText("Järgmised lisatavad: " + lisatavad.subList(1,lisatavad.size()).toString());
+
         } else {
             lisatav.setText("Kõik tipud lisatud!");
             lisatavadLabel.setText("");
             kahendpuuAla.getChildren().removeAll(pesad);
             pesad.clear();
-           // logiViga("Vigu: " + vigu + "\n");
+            Logija.logiViga(vead, logiFail);
             uuendaNooli();
-            kuvaTeade("Läbimäng tehtud", "Vigu kokku: ");
+            kuvaTeade("Läbimäng tehtud", "Vigu kokku: " + vigu);
+
+            laeUusPuu.setVisible(true);
         }
 
     }
@@ -163,15 +176,6 @@ public class AvlElemendiLisamine {
         visuaalneTipp.setFill(Color.GRAY);
 
         kahendpuuAla.getChildren().add(liigutatavTipp(tipp, vasak));
-        /*if (praeguneTipp!=puu.juurtipp){
-            kahendpuuAla.getChildren().add(liigutatavTipp(tipp, vasak));
-        }else {
-            Text tekst = new Text(visuaalneTipp.tipp==null ? "" : String.valueOf(visuaalneTipp.tipp.getVäärtus()));
-
-            tekst.setX(visuaalneTipp.getCenterX() - 4);
-            tekst.setY(visuaalneTipp.getCenterY() + 4);
-            kahendpuuAla.getChildren().add(new Group(visuaalneTipp, tekst));
-        }*/
 
         visuaalsedTipud.add(visuaalneTipp);
     }
@@ -197,9 +201,13 @@ public class AvlElemendiLisamine {
             aktiivsedTipud.remove(tipp);
             //lukustaPuu.setVisible(true);
             lisatud = true;
-            lisatav.setText("Lisatav tipp: Lisatud");
+            lisatav.setText("Lisa AVL-puusse tipp: Lisatud");
             kahendpuuAla.getChildren().removeAll(pesad);
             pesad.clear();
+            laeEelnevPuu.setVisible(true);
+            lukustaPuu.setVisible(true);
+            eemaldaVasakAlluv.setVisible(false);
+            eemaldaParemAlluv.setVisible(false);
             uuendaNooli();
         });
     }
@@ -236,6 +244,7 @@ public class AvlElemendiLisamine {
             });
             visuaalneTipp.centerYProperty().addListener((obs, oldY, newY) -> paremPesa.setCenterY(((double) newY) + pesaY));
         }
+
         uuendaNooli();
     }
     public Group liigutatavTipp(Tipp tipp, boolean vasak) {
@@ -259,7 +268,6 @@ public class AvlElemendiLisamine {
                 vanem = visuaalnePuu.getVanemKahendpuu(visuaalnePuu.juurtipp, tipp);
                 juur = visuaalnePuu.juurtipp;
             }
-            //System.out.println(juur + " " + vanem);
 
             if (e.getX() < kahendpuuAla.getLayoutX() + 40 || e.getX() > kahendpuuAla.getLayoutX() + kahendpuuAla.getWidth() - 40) return;
             //if (e.getY() < 35 || e.getY() > kahendpuuAla.getHeight() - 35) return;
@@ -273,21 +281,35 @@ public class AvlElemendiLisamine {
             else if (tipp.parem!=null && tipp.parem.visuaalneTipp!=null && e.getX() > tipp.parem.visuaalneTipp.getCenterX()-tipuRaadius) return;
 
             visuaalneTipp.setCenterX(e.getX());
-            //visuaalneTipp.setCenterY(e.getY());
+
             tekst.setLayoutX(e.getX() - 4);
-            //tekst.setY(e.getY() + 4);
+
             uuendaNooli();
         });
         grupp.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             if (e.getClickCount() == 1) {
                 StringBuilder inputText = new StringBuilder(tekst.getText());
-                if(hetkelMuudetakseTippu){
+                /*if(hetkelMuudetakseTippu){
                     //muudame hetke tipu väärtuse õigeks
-                    aktiivsedTipud.get(0).visuaalneTipp.setFill(Color.GRAY);
+                    //aktiivsedTipud.get(0).visuaalneTipp.setFill(Color.GRAY);
 
                     hetkelMuudetakseTippu = false;
-                    aktiivsedTipud.clear();
+                    //aktiivsedTipud.clear();
+                }*/
+                if (laeEelnevPuu.isVisible()){
+                    lisaVasakAlluv.setLayoutX(143);
+                    lisaParemAlluv.setLayoutX(143);
+                    eemaldaParemAlluv.setLayoutX(143);
+                    eemaldaVasakAlluv.setLayoutX(143);
                 }
+                else{
+                    lisaVasakAlluv.setLayoutX(10);
+                    lisaParemAlluv.setLayoutX(10);
+                    eemaldaParemAlluv.setLayoutX(10);
+                    eemaldaVasakAlluv.setLayoutX(10);
+                }
+
+
                 if ((visuaalneTipp.getFill()==Color.GREEN || visuaalneTipp.getFill()==Color.RED)){
                     aktiivsedTipud.remove(tipp);
                     visuaalneTipp.setFill(Color.GREY);
@@ -298,7 +320,9 @@ public class AvlElemendiLisamine {
                         eemaldaParemAlluv.setVisible(false);
                         uuendaNooli();
                     } else if (aktiivsedTipud.get(0).visuaalneTipp.getFill()==Color.GREEN){
-                        looPesad(aktiivsedTipud.get(0), aktiivsedTipud.get(0).visuaalneTipp);
+                        if (!lisatud) {
+                            looPesad(aktiivsedTipud.get(0), aktiivsedTipud.get(0).visuaalneTipp);
+                        }
 
                         eemaldaVasakAlluv.setVisible(true);
                         eemaldaParemAlluv.setVisible(true);
@@ -330,9 +354,13 @@ public class AvlElemendiLisamine {
                         eemaldaParemAlluv.setVisible(false);
                     }
 
-                }else{
-                    kuvaTeade("Info", "Maksimaalselt korraga saab valida 2 tippu!");
-                    return;
+                }else if (aktiivsedTipud.size()==2) {
+                    visuaalneTipp.setFill(aktiivsedTipud.get(0).visuaalneTipp.getFill());
+
+                    aktiivsedTipud.get(0).visuaalneTipp.setFill(Color.GRAY);
+                    aktiivsedTipud.remove(aktiivsedTipud.get(0));
+
+                    aktiivsedTipud.add(tipp);
                 }
 
                 if (visuaalneTipp.getFill()==Color.GREEN && !lisatud && aktiivsedTipud.size()==1) {
@@ -341,6 +369,8 @@ public class AvlElemendiLisamine {
 
                 grupp.requestFocus();
                 grupp.addEventHandler(KeyEvent.KEY_TYPED, keyEvent ->  {
+                    eemaldaVasakAlluv.setVisible(false);
+                    eemaldaParemAlluv.setVisible(false);
                     if (visuaalneTipp.getFill()==Color.GREEN) {
                         kahendpuuAla.getChildren().removeAll(pesad);
                         pesad.clear();
@@ -419,6 +449,19 @@ public class AvlElemendiLisamine {
         });
         return grupp;
     }
+    public void laeEelnevPuu(){
+        visuaalnePuu = new Kahendotsimispuu();
+        puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
+        visuaalsedTipud.clear();
+        aktiivsedTipud.clear();
+        ilusPuu();
+        uuendaNooli();
+        lisatud=false;
+        lisatav.setText("Lisa AVL-puusse tipp: " + lisatavad.get(0));
+
+        laeEelnevPuu.setVisible(false);
+        lukustaPuu.setVisible(false);
+    }
     private void lisaVasakAlluv(){
         Tipp kust = null;
         Tipp kuhu = null;
@@ -431,7 +474,6 @@ public class AvlElemendiLisamine {
                 kust = tipp;
             }else {
                 kuhu = tipp;
-
                 for (Tipp juur : metsaJuurtipud){
                     kuhuVanem = visuaalnePuu.getVanemKahendpuu(juur, tipp);
                     if (kuhuVanem != null)
@@ -447,7 +489,7 @@ public class AvlElemendiLisamine {
         }
 
         if(visuaalnePuu.kasTippOnSamasHarus(kuhu, kust)){
-            kuvaTeade("","Tipu ülemat tippu ei saa alluvaks määrata");
+            kuvaTeade("","Ülemtippu ei saa alluvaks määrata");
         } else if (kust.vasak != null) {
             kuvaTeade("", "Tipul on vasak alluv juba olemas");
         } else {
@@ -456,11 +498,11 @@ public class AvlElemendiLisamine {
                     visuaalnePuu.juurtipp = juur;
                     break;
                 }
-                if (juur != kuhu && kasTippOnSamasHarus(juur, kuhu)){
+                /*if (juur != visuaalnePuu.juurtipp && juur != kuhu && kasTippOnSamasHarus(juur, kuhu) && !kasTippOnSamasHarus(juur, kust)){
                     kuvaTeade("Viga", "Ülemaga tippu ei saa alluvaks lisada");
                     Logija.logiViga("Üritati lisada ülemaga tippu alluvaks", "avl_lisamine");
                     return;
-                }
+                }*/
             }
 
             kust.vasak = kuhu;
@@ -475,7 +517,7 @@ public class AvlElemendiLisamine {
 
             for (Tipp t : metsaJuurtipud){
                 if (t != visuaalnePuu.juurtipp) {
-                    System.out.println("seal vasak " + t.tase);
+
                     looVisuaalnePuu(t, t.tase, (int) t.visuaalneTipp.getCenterX(), (int) t.visuaalneTipp.getCenterY(), true);
                 }
             }
@@ -511,7 +553,7 @@ public class AvlElemendiLisamine {
             }
         }
         if(visuaalnePuu.kasTippOnSamasHarus(kuhu, kust)){
-            kuvaTeade("","Tipu ülemat tippu ei saa alluvaks määrata");
+            kuvaTeade("","Ülemtippu ei saa alluvaks määrata");
         } else if (kust.parem != null) {
             kuvaTeade("", "Tipul on parem alluv juba olemas");
         }
@@ -521,11 +563,11 @@ public class AvlElemendiLisamine {
                     visuaalnePuu.juurtipp = juur;
                     break;
                 }
-                if (juur != visuaalnePuu.juurtipp && juur != kuhu && kasTippOnSamasHarus(juur, kuhu) && !kasTippOnSamasHarus(juur, kust)){
+                /*if (juur != visuaalnePuu.juurtipp && juur != kuhu && kasTippOnSamasHarus(juur, kuhu) && !kasTippOnSamasHarus(juur, kust)){
                     kuvaTeade("Viga", "Ülemaga tippu ei saa alluvaks lisada");
                     Logija.logiViga("Üritati lisada ülemaga tippu alluvaks", "avl_lisamine");
                     return;
-                }
+                }*/
             }
 
             kust.parem = kuhu;
@@ -542,7 +584,7 @@ public class AvlElemendiLisamine {
 
             for (Tipp t : metsaJuurtipud){
                 if (t != visuaalnePuu.juurtipp) {
-                    System.out.println("seal " + t.tase);
+
                     looVisuaalnePuu(t, t.tase, (int) t.visuaalneTipp.getCenterX(), (int) t.visuaalneTipp.getCenterY(), true);
                 }
             }
@@ -563,7 +605,7 @@ public class AvlElemendiLisamine {
             juur = j;
             if (vanem != null) {
                 //normaalseks puu kuvamiseks
-                uus.tase=-1;
+                uus.tase=0;
                 break;
             }
         }
@@ -584,7 +626,7 @@ public class AvlElemendiLisamine {
             juur = j;
             if (vanem != null) {
                 //normaalseks puu kuvamiseks
-                uus.tase=-1;
+                uus.tase=0;
                 break;
             }
         }
@@ -600,7 +642,7 @@ public class AvlElemendiLisamine {
         kahendpuuAla.getChildren().removeIf(e -> e instanceof Arrow);
         List<Arrow> nooled = new ArrayList<>();
         for (VisuaalneTipp vt : visuaalsedTipud) {
-            if (vt.tipp.parem != null && vt.tipp.parem.visuaalneTipp.tipp!=null ) {//&& visuaalsedTipud.contains(vt.tipp.parem.visuaalneTipp)
+            if (vt.tipp.parem != null && vt.tipp.parem.visuaalneTipp.tipp!=null ) {
                 Arrow nool = new Arrow(
                         vt.getCenterX(), vt.getCenterY(),
                         vt.tipp.parem.visuaalneTipp.getCenterX(), vt.tipp.parem.visuaalneTipp.getCenterY()
@@ -640,47 +682,40 @@ public class AvlElemendiLisamine {
             return;
         }
         if (metsaJuurtipud.size()>1){
+            vigu++;
+            vead.add("VIGA: lisamist kontrolliti kui ekraanil oli mitu puud");
             kuvaTeade("","Ei saa olla mitu puud");
             return;
         }
         if(visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true)) {
             if(kasPuudOnSamad(puu.juurtipp, visuaalnePuu.juurtipp)){
-                System.out.println("\n");
-                puu.printPuuJaVisuaalnePuu(puu.juurtipp);
-                System.out.println("\n");
-                visuaalnePuu.printPuuJaVisuaalnePuu(visuaalnePuu.juurtipp);
+                vead.add(lisatavad.get(0) + " lisati korrektselt");
                 kuvaTeade("","Korrektne lisamine!");
-                järgmineLisatav();
-            }else {
-                System.out.println("\n");
-                puu.printPuuJaVisuaalnePuu(puu.juurtipp);
-                System.out.println("\n");
-                visuaalnePuu.printPuuJaVisuaalnePuu(visuaalnePuu.juurtipp);
-                kuvaTeade("","Ebakorrektne lisamine, kuid on säilitatud kahendotsimispuu");
-                Logija.logiViga("AVL lisamine ebakorrektne, kahendotsimispuu säilis\n", "avl_lisamine");
-
-                //TODO logi viga
-                järgmineLisatav();
-
             }
+            else {
+                vigu++;
+                vead.add("VIGA: " + lisatavad.get(0) + " lisati ebakorrektselt, kahendotsimispuu säilis");
+                kuvaTeade("","Ebakorrektne lisamine, kuid on säilitatud kahendotsimispuu");
+            }
+            lisatavad.remove(0);
+            järgmineLisatav();
         }else {
-            System.out.println("\n");
-            puu.printPuuJaVisuaalnePuu(puu.juurtipp);
-            System.out.println("\n");
-            visuaalnePuu.printPuuJaVisuaalnePuu(visuaalnePuu.juurtipp);
+            vigu++;
+            vead.add("VIGA: " + lisatavad.get(0) + " lisati ebakorrektselt, kahendotsimispuu ei säilinud");
             kuvaTeade("","Ebakorrektne lisamine ja puu ei ole enam Kahendotsimispuu!");
-            Logija.logiViga("Eemaldus lisamine, puu ei ole enam kahendotsimispuu\n", "avl_lisamine");
             visuaalnePuu = new Kahendotsimispuu();
             puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
             visuaalsedTipud.clear();
+            aktiivsedTipud.clear();
+            metsaJuurtipud.clear();
             ilusPuu();
             lisatud=false;
-            lisatav.setText("Lisatav tipp: " + lisatavad.get(0));
+            lisatav.setText("Lisa AVL-puusse tipp: " + lisatavad.get(0));
             uuendaNooli();
 
         }
-        System.out.println("\n");
-
+        laeEelnevPuu.setVisible(false);
+        lukustaPuu.setVisible(false);
     }
     public boolean kasTippOnSamasHarus(Tipp ülem, Tipp otsitav){
         if (ülem == null)
@@ -713,7 +748,7 @@ public class AvlElemendiLisamine {
 
     }
     private void kuvaTeade(String pealkiri, String sisu) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.initOwner(kahendpuuAla.getScene().getWindow());
         alert.setTitle("Teavitus");
         alert.setHeaderText(pealkiri);

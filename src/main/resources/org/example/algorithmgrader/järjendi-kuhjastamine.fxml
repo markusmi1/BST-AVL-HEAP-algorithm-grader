@@ -6,18 +6,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.shape.Circle?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.algorithmgrader.Controllers.JärjendiKuhjastamine"
             prefHeight="400.0" prefWidth="600.0">
-    <Label fx:id="järgmineTippLabel" layoutX="20" layoutY="20" style="-fx-font-size: 15px;"/>
-    <Label fx:id="järgmisedTipudLabel" layoutX="20" layoutY="45" style="-fx-font-size: 14px;"/>
 
-    <Button fx:id="laeUusPuu" layoutX="20" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
-    <Button fx:id="eelminePuuOlek" layoutX="105" layoutY="70" text="Eelmine puu olek" onMouseClicked="#laeEelnevPuu"/>
-    <Button fx:id="järgmineTipp" text="Lisa järgmine" onAction="#lukustaPuuOlek" layoutX="20" layoutY="100"/>
+    <Label fx:id="järgmineTippLabel" layoutX="10" layoutY="20" style="-fx-font-size: 15px;"/>
+    <Label fx:id="järgmisedTipudLabel" layoutX="10" layoutY="45" prefWidth="250" style="-fx-font-size: 12px;"/>
 
-    <Label fx:id="juhend" layoutX="400" layoutY="5" wrapText="true" prefWidth="500" style="-fx-font-size: 13px;"></Label>
+    <Button fx:id="laeUusPuu" layoutX="10" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
+
+    <Button fx:id="eelminePuuOlek" layoutX="105" layoutY="70" text="Eelmine puu olek" onMouseClicked="#laeEelnevKuhi" visible="false"/>
+
+    <Button fx:id="lukustaPuu" text="Kontrolli kuhjastatud puud" onAction="#lukustaPuuOlek" layoutX="10" layoutY="100" visible="false"/>
+
+    <Button fx:id="vahetaTipud" text="Vaheta tipud" layoutX="10" layoutY="70" visible="false"/>
+
+    <Label fx:id="juhend" layoutX="310" layoutY="10" wrapText="true" prefWidth="350" style="-fx-font-size: 13px;"></Label>
+
+    <Pane layoutX="675" layoutY="10">
+        <Circle radius="15" layoutX="10" layoutY="13"  fill="lightgray"/>
+        <Label layoutX="35" layoutY="5" text="Klikk lisab hetkel lisatava tipu"/>
+
+        <Circle radius="15" layoutX="10" layoutY="55"  fill="gray"/>
+        <Label layoutX="35" layoutY="47" wrapText="true" prefWidth="200" text="Klikk muudab aktiivseks"/>
+
+        <Circle radius="15" layoutX="10" layoutY="97" fill="green"/>
+        <Label layoutX="35" layoutY="82" wrapText="true" prefWidth="200" text="Aktiivne tipp, kuvab võimalikud pesad, saab vahetada teise aktiivse tipuga"/>
+    </Pane>
 
 
     <Pane fx:id="kahendpuuAla" layoutX="5.0" layoutY="143.0" prefHeight="520.0" prefWidth="890.0"

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.algorithmgrader.Controllers.Avaleht"
             prefHeight="400.0" prefWidth="600.0">
 
+    <VBox spacing="15.0" alignment="TOP_CENTER" AnchorPane.topAnchor="200.0"
+          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+
+        <Label text="Kahendpuu- ja kuhjaalgoritmide läbimängija" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+        <Label prefWidth="700" wrapText="true" text="Programm võimaldab visuaalselt läbimängida erinevaid kahendotsimispuu, AVL-puu ja kuhjaalgoritme.
+Iga moodul annab võimaluse elemente lisada, eemaldada ja jälgida, kuidas struktuurid muutuvad." />
+
+    </VBox>
 </AnchorPane>

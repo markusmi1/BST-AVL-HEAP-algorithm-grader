@@ -1,1 +1,1 @@
-Kahendotsimispuu järjend: [5, 9, 11, 4, 1, 6, 3, 15, 7, 13, 14, 10, 8, 2, 12]      Eemaldatavad elemendid: [6]
+Kahendotsimispuu järjend: [5,9, 11, 4, 1, 6, 3, 15, 7, 13, 14, 10, 8, 2, 12]      Eemaldatavad elemendid: [6, 11]

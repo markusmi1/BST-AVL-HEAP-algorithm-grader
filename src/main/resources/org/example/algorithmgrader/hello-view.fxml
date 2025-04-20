@@ -12,13 +12,13 @@
   <Tab fx:id="jarjend_BST" text="Järjend kahendotsimispuuks">
     <fx:include source="järjend-kahendotsimispuuks.fxml"/>
   </Tab>
-  <Tab fx:id="eemaldamine_BST" text="Elemendi eemaldamine kahendotsimispuust">
+  <Tab fx:id="eemaldamine_BST" text="Elemendi eemaldamine BST">
     <fx:include source="eemaldamine-kahendotsimispuust.fxml"/>
   </Tab>
-  <Tab fx:id="lisamineAvl" text="Elemendi lisamine AVL-puusse">
+  <Tab fx:id="lisamineAvl" text="Elemendi lisamine AVL">
     <fx:include source="avl-elemendi-lismine.fxml"/>
   </Tab>
-  <Tab fx:id="eemaldamineAvl" text="Elemendi eemaldamine AVL-puust">
+  <Tab fx:id="eemaldamineAvl" text="Elemendi eemaldamine AVL">
     <fx:include source="avl-elemendi-eemaldamine.fxml"/>
   </Tab>
   <Tab fx:id="järjendiKuhjastamine" text="Järjendi kuhjastamine">

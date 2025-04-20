@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.shape.Circle?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.algorithmgrader.Controllers.Kuhjameetod"
             prefHeight="400.0" prefWidth="600.0">
+
+    <TextFlow fx:id="massiivFlow" layoutX="10" layoutY="20" style="-fx-font-size: 15px;"/>
+
+    <Button fx:id="laeUusPuu" layoutX="10" layoutY="70" text="Lae uus kuhi" onMouseClicked="#laeKuhi"/>
+    <Button fx:id="märgiTöödelduks" layoutX="10" layoutY="70" text="Märgi element töödelduks" visible="false"/>
+    <Button fx:id="vahetaTipud" text="Vaheta tipud" layoutX="10" layoutY="70" visible="false"/>
+
+    <Button fx:id="laeEelnevPuu" layoutX="10" layoutY="100" text="Eelmine kuhja olek" onMouseClicked="#laeEelnevPuu" visible="false"/>
+
+    <Button fx:id="lukustaPuu" text="Kontrolli sammu" layoutX="128" layoutY="100" onAction="#lukustaKuhi" visible="false"/>
+
+    <Label fx:id="juhend" layoutX="250" layoutY="5" wrapText="true" prefWidth="380" style="-fx-font-size: 13px;"></Label>
+
+    <Pane layoutX="675" layoutY="10">
+        <Circle radius="15" layoutX="10" layoutY="25"  fill="gray"/>
+        <Label layoutX="35" layoutY="15" wrapText="true" prefWidth="200" text="Klikk muudab aktiivseks"/>
+
+        <Circle radius="15" layoutX="10" layoutY="77" fill="green"/>
+        <Label layoutX="35" layoutY="60" wrapText="true" prefWidth="200" text="Aktiivne tipp, saab tipu töödelda, saab vahetada teise aktiivse tipuga"/>
+    </Pane>
+
+    <Pane fx:id="kahendpuuAla" layoutX="5.0" layoutY="143.0" prefHeight="520.0" prefWidth="890.0"
+          style="-fx-border-color:black; -fx-border-width:2; -fx-border-style:solid" />
 
 </AnchorPane>

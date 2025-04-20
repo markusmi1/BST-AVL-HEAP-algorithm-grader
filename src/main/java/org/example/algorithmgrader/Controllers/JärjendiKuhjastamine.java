@@ -1,5 +1,6 @@
 package org.example.algorithmgrader.Controllers;
 
+import static org.example.algorithmgrader.Util.Koordinaadid.*;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
@@ -9,10 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import org.example.algorithmgrader.Kahendpuu.Arrow;
-import org.example.algorithmgrader.Kahendpuu.Kahendotsimispuu;
-import org.example.algorithmgrader.Kahendpuu.Tipp;
-import org.example.algorithmgrader.Kahendpuu.VisuaalneTipp;
+import org.example.algorithmgrader.Kahendpuu.*;
 import org.example.algorithmgrader.Util.Logija;
 
 import java.io.IOException;
@@ -27,45 +25,53 @@ public class JärjendiKuhjastamine {
     @FXML
     Button vahetaTipud;
     @FXML
-    Button laeJärjend;
+    Button lukustaPuu;
     @FXML
-    Button järgmineTipp;
-    @FXML
-    Button vaheta;
+    Button eelminePuuOlek;
     @FXML
     private Label järgmineTippLabel; // Kuvab järgmise tipu
     @FXML
     private Label järgmisedTipudLabel;
-    private Kahendotsimispuu puu;
-    private Kahendotsimispuu visuaalnePuu;
-    private Kahendotsimispuu eelnevaSeisugaPuu;
+    @FXML
+    private Button laeUusPuu;
+    @FXML
+    private Label juhend;
+    private Kuhi kuhi;
+    private Kuhi visuaalneKuhi;
+    private List<Integer> eelnevaSeisugaKuhi;
     private Tipp praeguneTipp;
+    private Tipp kuhjaJuurtipp;
     private List<VisuaalneTipp> visuaalsedTipud = new ArrayList<>();
     private List<Tipp> aktiivsedTipud = new ArrayList<>();
     private List<Integer> järjend = new ArrayList<>();
     private List<VisuaalneTipp> pesad = new ArrayList<>();
-    private final int JUURE_X = 400;
-    private final int JUURE_Y = 50;
-    private final int tipuRaadius = 20;
-    private final int pesaX = 40;
-    private final int pesaY = 60;
-    private  final int pesaRaadius = 15;
+    private List<String> vead = new ArrayList<>();
     private int vigu = 0;
-    private boolean lisatud;
+    private boolean elemendidLisatud;
+    private final String sisendFail = "sisendid/järjendiKuhjastamine.txt";
+    private final String logiFail = "kuhjastamine_logi.txt";
     public void laePuu() {
-        Logija.logiViga("\n", "järjendi_kuhjastamine");
+        juhend.setText("Kasutusjuhend:\n" +
+                "Lisa elemendid järjendist kompaktsesse kahendpuusse,\n"+
+                "seejärel kuhjasta kompaktne kahendpuu\n"+
+                "- Kontrolli kuhjastatud puud: Kontrollib kuhjastamise lõpptulemust\n" +
+                "- Vaheta tipud: Saab vahetada 2 tippu vastavalt kuhjastamise algoritmile\n");
+
         kahendpuuAla.getChildren().clear();
         järjend.clear();
         visuaalsedTipud.clear();
         pesad.clear();
+        vead=new ArrayList<>();
         vigu = 0;
-        loeFailistVäärtused("sisendid/järjendiKuhjastamine.txt");
-        puu = new Kahendotsimispuu();
-        visuaalnePuu = new Kahendotsimispuu();
-        eelnevaSeisugaPuu = new Kahendotsimispuu();
+        loeFailistVäärtused(sisendFail);
+        vead.add("Sisend: " + järjend + "\n");
+
+        kuhi = new Kuhi();
+        visuaalneKuhi = new Kuhi();
         järgmineLisatavTipp();
         looJuurPesa();
-        lisatud=false;
+        elemendidLisatud =false;
+        laeUusPuu.setVisible(false);
     }
     private void looJuurPesa() {
         kahendpuuAla.getChildren().removeAll(pesad);
@@ -86,16 +92,24 @@ public class JärjendiKuhjastamine {
             List<String> sisu = Files.readAllLines(Path.of(failitee));
             for (String rida : sisu) {
                 rida = rida.replace("[", "").replace("]","");
-                for (String väärtus : rida.split(",\s++"))
-                    järjend.add(Integer.parseInt(väärtus));
+                for (String väärtus : rida.split(","))
+                    järjend.add(Integer.parseInt(väärtus.strip()));
             }
         } catch (IOException e) {
             System.err.println("Vales formaadis fail!");
             System.out.println(e.getMessage());
         }
     }
-    public void looVisuaalnePuu(Tipp tipp, int tase, int x, int y, boolean vasak){
-        if (tipp== null)
+
+    public void ilusPuu(){
+        kahendpuuAla.getChildren().clear();
+        visuaalsedTipud.clear();
+        kuhjaJuurtipp = visuaalneKuhi.looTipp(0);
+
+        looVisuaalneKuhi(kuhjaJuurtipp, 1, JUURE_X, JUURE_Y, true);
+    }
+    public void looVisuaalneKuhi(Tipp tipp, int tase, int x, int y, boolean vasak){
+        if (tipp == null)
             return;
 
         tipp.visuaalneTipp = new VisuaalneTipp(x, y, tipuRaadius, tipp);
@@ -109,8 +123,8 @@ public class JärjendiKuhjastamine {
 
         //liigutatavTipp(tipp.visuaalneTipp);
 
-        looVisuaalnePuu(tipp.vasak, tase+1, x-xKoordMuutus, y+pesaY, true);
-        looVisuaalnePuu(tipp.parem, tase+1, x+xKoordMuutus, y+pesaY, false);
+        looVisuaalneKuhi(tipp.vasak, tase+1, x-xKoordMuutus, y+pesaY, true);
+        looVisuaalneKuhi(tipp.parem, tase+1, x+xKoordMuutus, y+pesaY, false);
     }
     public void lisaTippEkraanile(Tipp tipp, VisuaalneTipp visuaalneTipp, boolean vasak){
         //VisuaalneTipp visuaalneTipp = tipp.visuaalneTipp;
@@ -126,35 +140,52 @@ public class JärjendiKuhjastamine {
         pesa.setOnMouseClicked(e->{
             Tipp lisatavTipp = new Tipp(praeguneTipp.väärtus);
             VisuaalneTipp visuaalneTipp = new VisuaalneTipp(pesa.getCenterX(), pesa.getCenterY(), tipuRaadius, lisatavTipp);
-            if (puu.juurtipp == praeguneTipp) {
-                visuaalnePuu.juurtipp = lisatavTipp;
-                lisaTippEkraanile(visuaalnePuu.juurtipp, visuaalneTipp, vasak);
+            if (visuaalsedTipud.isEmpty()) {
+                visuaalneKuhi.lisaKirje(praeguneTipp.väärtus);
+                lisaTippEkraanile(lisatavTipp, visuaalneTipp, vasak);
+                ilusPuu();
             }
             else if (vasak){
+                visuaalneKuhi.kuhi.add(praeguneTipp.väärtus);
+
+                if (visuaalneKuhi.leiaÜlemuseIndeks(visuaalneKuhi.kuhi.size()-1)!=tipp.indeks){
+                    vigu++;
+                    vead.add("VIGA: Tippu " + praeguneTipp.väärtus + " lisades oleks kaotatud kompaktne kahendpuu");
+                    kuvaTeade("Viga","Vale tipu lisamine, puu ei ole kompaktne");
+                    visuaalneKuhi.kuhi.remove(visuaalneKuhi.kuhi.size()-1);
+                    return;
+                }
                 tipp.visuaalneTipp.setFill(Color.GRAY);
                 tipp.vasak = lisatavTipp;
+
                 lisaTippEkraanile(tipp.vasak, visuaalneTipp, true);
+                ilusPuu();
             }else {
+                visuaalneKuhi.kuhi.add(praeguneTipp.väärtus);
+                if (visuaalneKuhi.leiaÜlemuseIndeks(visuaalneKuhi.kuhi.size()-1)!=tipp.indeks || tipp.vasak==null){
+                    kuvaTeade("Viga","Vale tipu lisamine, puu ei ole kompaktne");
+                    visuaalneKuhi.kuhi.remove(visuaalneKuhi.kuhi.size()-1);
+                    return;
+                }
                 tipp.visuaalneTipp.setFill(Color.GRAY);
                 tipp.parem = lisatavTipp;
                 lisaTippEkraanile(tipp.parem, visuaalneTipp, false);
+                ilusPuu();
             }
 
             aktiivsedTipud.remove(tipp);
             //lukustaPuu.setVisible(true);
-            lisatud = true;
-            järgmineTippLabel.setText("Lisatav tipp: Lisatud");
+            //lisatud = true;
+            järgmineTippLabel.setText("Kuhjasta puu!");
             kahendpuuAla.getChildren().removeAll(pesad);
             pesad.clear();
-            järgmineTipp.setVisible(true);
+            //järgmineTipp.setVisible(true);
+            järjend.remove(0);
+            järgmineLisatavTipp();
             uuendaNooli();
         });
     }
-    public void ilusPuu(){
-        kahendpuuAla.getChildren().clear();
 
-        looVisuaalnePuu(visuaalnePuu.juurtipp, 1, JUURE_X, JUURE_Y, true);
-    }
     public void looPesad(Tipp tipp, VisuaalneTipp visuaalneTipp){
         if (tipp.vasak == null) {
             VisuaalneTipp vasakPesa = new VisuaalneTipp(visuaalneTipp.getCenterX() - pesaX, visuaalneTipp.getCenterY() + pesaY, pesaRaadius, null);
@@ -192,23 +223,26 @@ public class JärjendiKuhjastamine {
     }
     private void järgmineLisatavTipp() {
         if (!järjend.isEmpty()) {
-            järgmineTipp.setVisible(false);
-            lisatud=false;
+            lukustaPuu.setVisible(false);
+            elemendidLisatud =false;
+            eelnevaSeisugaKuhi = new ArrayList<>(kuhi.kuhi);
 
             praeguneTipp = new Tipp(järjend.get(0));
-            puu.lisa(praeguneTipp, false);
+            kuhi.lisaKirje(järjend.get(0));
 
-            järgmineTippLabel.setText("Lisatav tipp: " + (järjend.isEmpty() ? "Järjend kuhjastatud" : järjend.get(0)));
-            järgmisedTipudLabel.setText(järjend.subList(1,järjend.size()).toString());
+            järgmineTippLabel.setText("Lisa kompaktsesse kahendpuusse tipp: " + (järjend.isEmpty() ? "Järjend kuhjastatud" : järjend.get(0)));
+            järgmisedTipudLabel.setText("Järjend: " + järjend.subList(1,järjend.size()).toString());
 
         } else {
-            järgmineTippLabel.setText("Järjend kuhjastatud!");
+            järgmineTippLabel.setText("Kuhjasta puu!");
             järgmisedTipudLabel.setText("");
             kahendpuuAla.getChildren().removeAll(pesad);
             pesad.clear();
-            Logija.logiViga("Vigu: " + vigu + "\n", "järjendi_kuhjastamine");
+            elemendidLisatud=true;
+            lukustaPuu.setVisible(true);
+            vead.set(0, vead.get(0) + "Kompaktne kahendpuu järjend: " + kuhi.kuhi);
+
             uuendaNooli();
-            kuvaTeade("Läbimäng tehtud", "Vigu kokku: " +vigu);
         }
     }
     public Group liigutatavTipp(Tipp tipp, boolean vasak) {
@@ -220,15 +254,15 @@ public class JärjendiKuhjastamine {
 
         Group grupp = new Group(visuaalneTipp, tekst);
         grupp.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-            if (tipp == visuaalnePuu.juurtipp) return;
+            if (tipp == kuhjaJuurtipp) return;
             if (e.getX() < kahendpuuAla.getLayoutX() + 40 || e.getX() > kahendpuuAla.getLayoutX() + kahendpuuAla.getWidth() - 40)
                 return;
             //if (e.getY() < 35 || e.getY() > kahendpuuAla.getHeight() - 35) return;
 
-            if (vasak && e.getX() > visuaalnePuu.getVanem(visuaalnePuu.juurtipp, tipp).visuaalneTipp.getCenterX() - tipuRaadius)
+            if (vasak && e.getX() > getVanemKahendpuu(kuhjaJuurtipp, tipp).visuaalneTipp.getCenterX() - tipuRaadius)
                 return;
 
-            else if (!vasak && e.getX() < visuaalnePuu.getVanem(visuaalnePuu.juurtipp, tipp).visuaalneTipp.getCenterX() + tipuRaadius)
+            else if (!vasak && e.getX() < getVanemKahendpuu(kuhjaJuurtipp, tipp).visuaalneTipp.getCenterX() + tipuRaadius)
                 return;
 
             if (tipp.vasak != null && tipp.vasak.visuaalneTipp != null && e.getX() < tipp.vasak.visuaalneTipp.getCenterX() + tipuRaadius)
@@ -244,87 +278,181 @@ public class JärjendiKuhjastamine {
         });
         grupp.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             if (e.getClickCount()==1){
+
                 if(visuaalneTipp.getFill() == Color.GREEN){
                     aktiivsedTipud.remove(tipp);
                     visuaalneTipp.setFill(Color.GRAY);
                     kahendpuuAla.getChildren().removeAll(pesad);
                     pesad.clear();
+                    vahetaTipud.setVisible(false);
                     uuendaNooli();
                     return;
                 }
+                if(!elemendidLisatud && visuaalneTipp.getFill()==Color.GRAY){
+                    if (!aktiivsedTipud.isEmpty()){
+                        aktiivsedTipud.get(0).visuaalneTipp.setFill(Color.GRAY);
+                        aktiivsedTipud.remove(aktiivsedTipud.get(0));
+                        kahendpuuAla.getChildren().removeAll(pesad);
+                        pesad.clear();
+                    }
+
+                    visuaalneTipp.setFill(Color.GREEN);
+                    aktiivsedTipud.add(tipp);
+                    looPesad(tipp, visuaalneTipp);
+                    return;
+                }
+
                 if (aktiivsedTipud.size()<2){
                     aktiivsedTipud.add(tipp);
                     visuaalneTipp.setFill(Color.GREEN);
+                    if (aktiivsedTipud.size()==2){
+                        vahetaTipud.setVisible(true);
+                    }
+                }else if (aktiivsedTipud.size()==2){
+                    aktiivsedTipud.get(0).visuaalneTipp.setFill(Color.GRAY);
+                    aktiivsedTipud.remove(aktiivsedTipud.get(0));
 
-                }else {
-                    kuvaTeade("Info","Korraga saab olla valitud 2 tippu!");
+                    visuaalneTipp.setFill(Color.GREEN);
+                    aktiivsedTipud.add(tipp);
                 }
-                if (!lisatud && visuaalneTipp.getFill()==Color.GREEN){
-                    looPesad(tipp, visuaalneTipp);
-                }
+
             }
 
             e.consume();
             uuendaNooli();
 
         });
+        vahetaTipud.setOnAction(e1 ->{
+            vahetaKuhjaTipud();
+            vahetaTipud.setVisible(false);
+            aktiivsedTipud.get(0).visuaalneTipp.setFill(Color.GRAY);
+            aktiivsedTipud.get(1).visuaalneTipp.setFill(Color.GRAY);
+            aktiivsedTipud.clear();
+            uuendaNooli();
+        });
+
 
         return grupp;
     }
-    public void lukustaPuuOlek(){
-        if (!lisatud){
-            kuvaTeade("","Enne tipu lisamist ei saa puud lukku panna");
+    public void vahetaKuhjaTipud(){
+        Tipp tipp1 = aktiivsedTipud.get(0);
+        Tipp tipp2 = aktiivsedTipud.get(1);
+
+        if ((visuaalneKuhi.leiaÜlemuseIndeks(tipp1.indeks)!=tipp2.indeks && visuaalneKuhi.leiaÜlemuseIndeks(tipp2.indeks)!=tipp1.indeks)){
+            kuvaTeade("","Tippu saab vahetada ainult oma otsese ülemusega");
             return;
         }
-        if(visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true)) {
-            if(kasPuudOnSamad(puu.juurtipp, visuaalnePuu.juurtipp)){
-                System.out.println("\n");
-                puu.printPuuJaVisuaalnePuu(puu.juurtipp);
-                System.out.println("\n");
-                visuaalnePuu.printPuuJaVisuaalnePuu(visuaalnePuu.juurtipp);
-                järjend.remove(0);
-                järgmineLisatavTipp();
+        if (tipp2.indeks<tipp1.indeks) {
 
-            }else {
-                System.out.println("\n");
-                puu.printPuuJaVisuaalnePuu(puu.juurtipp);
-                System.out.println("\n");
-                visuaalnePuu.printPuuJaVisuaalnePuu(visuaalnePuu.juurtipp);
-                kuvaTeade("","Ebakorrektne lisamine, kuid on säilitatud kahendpuu");
-                Logija.logiViga("Ebakorrektne elemendi lisamine, kuid on säilitatud kahendpuu\n", "järjendi_kuhjastamine");
-
-                //TODO logi viga
-                järjend.remove(0);
-                järgmineLisatavTipp();
-
+            if (!kasVahetusSobib(tipp2,tipp1)){
+                return;
             }
         }else {
-            System.out.println("\n");
-            puu.printPuuJaVisuaalnePuu(puu.juurtipp);
-            System.out.println("\n");
-            visuaalnePuu.printPuuJaVisuaalnePuu(visuaalnePuu.juurtipp);
-            kuvaTeade("","Ebakorrektne lisamine ja puu ei ole enam kahendpuu!");
-            Logija.logiViga("Ebakorrektne lisamine, puu ei ole enam kahendotsimispuu\n", "järjendi_kuhjastamine");
-            visuaalnePuu = new Kahendotsimispuu();
-            puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
-            visuaalsedTipud.clear();
-            ilusPuu();
-            lisatud=false;
-            järgmineTippLabel.setText("Lisatav tipp: " + järjend.get(0));
-            uuendaNooli();
-
+            if (!kasVahetusSobib(tipp1, tipp2)){
+                return;
+            }
         }
-        System.out.println("\n");
 
+        int ajutine = tipp1.väärtus;
+        tipp1.väärtus=tipp2.väärtus;
+        tipp2.väärtus=ajutine;
+
+        visuaalneKuhi.vaheta(tipp1.indeks, tipp2.indeks);
+
+        ajutine = tipp1.indeks;
+        tipp1.indeks = tipp2.indeks;
+        tipp2.indeks = ajutine;
+
+        ilusPuu();
     }
-    public void laeEelnevPuu(){
-        visuaalnePuu = new Kahendotsimispuu();
-        puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
-        lisatud=false;
+    private boolean kasVahetusSobib(Tipp tipp, Tipp tipp2){
+        if (tipp.väärtus>=tipp2.väärtus) {
+            vigu++;
+            vead.add("ALGORITMILINE VIGA: Ülemtipp väärtusega " + tipp.väärtus + " üritati vahetada alamtipuga " + tipp2.väärtus);
+            kuvaTeade("Viga", "Vahetus ei vasta kuhjastamise algoritmile");
+            return false;
+        }
+        if (tipp.vasak!=null) {
+            if (tipp.vasak != tipp2 && tipp.vasak.väärtus > tipp2.väärtus){
+                vigu++;
+                vead.add("ALGORITMILINE VIGA: Ülemtipp väärtusega " + tipp.väärtus + " üritati vahetada parema alluvaga väärtusega "
+                        + tipp2.väärtus + ", kui vasaku väärtus on " + tipp.vasak.väärtus);
+                kuvaTeade("Viga", "Vahetus ei vasta kuhjastamise algoritmile.");
+                return false;
+            }
+            if (!kasAlamkuhiOnKuhi(tipp.vasak)) {
+                vigu++;
+                vead.add("ALGORITMILINE VIGA: Vahetatavate tippude alamkuhjad ei vasta kuhjatingimustele");
+                kuvaTeade("Viga", "Vahetatavate tippude alamkuhjad ei vasta kuhjatingimustele");
+                return false;
+            }
+        }
+        if (tipp.parem!=null) {
+            if (tipp.parem != tipp2 && tipp.parem.väärtus > tipp2.väärtus){
+                vigu++;
+                vead.add("ALGORITMILINE VIGA: Ülemtipp väärtusega " + tipp.väärtus + " üritati vahetada vasaku alluvaga väärtusega "
+                        + tipp2.väärtus + ", kui parema väärtus on " + tipp.parem.väärtus);
+                kuvaTeade("Viga", "Vahetus ei vasta kuhjastamise algoritmile..");
+                return false;
+            }
+            if (!kasAlamkuhiOnKuhi(tipp.parem)) {
+                vigu++;
+                vead.add("ALGORITMILINE VIGA: Vahetatavate tippude alamkuhjad ei vasta kuhjatingimustele");
+                kuvaTeade("Viga", "Vahetatavate tippude alamkuhi ei vasta kuhjatingimustele");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean kasAlamkuhiOnKuhi(Tipp juur){
+        if (juur==null){
+            return true;
+        }
+        boolean v=true;
+        boolean p=true;
+
+        if (juur.vasak!=null){
+            if (juur.väärtus>=juur.vasak.väärtus){
+                v = kasAlamkuhiOnKuhi(juur.vasak);
+            }else {
+                return  false;
+            }
+        }
+        if (juur.parem!=null){
+            if (juur.väärtus>=juur.parem.väärtus){
+                p = kasAlamkuhiOnKuhi(juur.parem);
+            }else {
+                return  false;
+            }
+        }
+
+        return v && p;
+    }
+    public void lukustaPuuOlek(){
+        if(visuaalneKuhi.kasOnKuhi()) {
+            järgmineTippLabel.setText("Järjend kuhjastatud!");
+            vead.add("Vigu: " + vigu);
+            Logija.logiViga(vead, logiFail);
+            laeUusPuu.setVisible(true);
+            vahetaTipud.setVisible(false);
+            lukustaPuu.setVisible(false);
+            kuvaTeade("Läbimäng tehtud", "Vigu kokku: " + vigu);
+        }else {
+            vigu++;
+            vead.add("VIGA: Kuhi peaks olema - " + kuhi.kuhi + ", aga on - " + visuaalneKuhi.kuhi);
+            kuvaTeade("","Kahendkuhi ei vasta kuhja tingimustele!");
+        }
+    }
+    public void laeEelnevKuhi(){
+        visuaalneKuhi.kuhi= new ArrayList<>(eelnevaSeisugaKuhi);
+        elemendidLisatud =false;
         visuaalsedTipud.clear();
+        järgmineTippLabel.setText("Lisa kompaktsesse kahendpuusse tipp: " + järjend.get(0));
         ilusPuu();
         uuendaNooli();
     }
+
     private void uuendaNooli(){
         kahendpuuAla.getChildren().removeIf(e -> e instanceof Arrow);
         List<Arrow> nooled = new ArrayList<>();
@@ -343,14 +471,14 @@ public class JärjendiKuhjastamine {
                 );
                 nooled.add(nool);
             }
-            if (vt.getFill()== Color.GREEN &&  (vt.tipp.parem == null || vt.tipp.parem.visuaalneTipp ==null) && !pesad.isEmpty()) {
+            if (aktiivsedTipud.size()==1 && vt.getFill()== Color.GREEN &&  (vt.tipp.parem == null || vt.tipp.parem.visuaalneTipp ==null) && !pesad.isEmpty()) {
                 Arrow nool = new Arrow(
                         vt.getCenterX(), vt.getCenterY(),
                         vt.getCenterX()+pesaX, vt.getCenterY()+pesaY
                 );
                 nooled.add(nool);
             }
-            if (vt.getFill()==Color.GREEN && (vt.tipp.vasak == null || vt.tipp.vasak.visuaalneTipp ==null) && !pesad.isEmpty()){
+            if (aktiivsedTipud.size()==1 && vt.getFill()==Color.GREEN && (vt.tipp.vasak == null || vt.tipp.vasak.visuaalneTipp ==null) && !pesad.isEmpty()){
                 Arrow nool = new Arrow(
                         vt.getCenterX(), vt.getCenterY(),
                         vt.getCenterX()-pesaX, vt.getCenterY()+pesaY
@@ -361,29 +489,21 @@ public class JärjendiKuhjastamine {
         }
         kahendpuuAla.getChildren().addAll(nooled);
     }
-    private boolean kasPuudOnSamad(Tipp pJuur, Tipp vJuur){
-        if (pJuur==null && vJuur==null)
-            return true;
-        if (pJuur==null || vJuur == null)
-            return false;
-
-        if (pJuur.väärtus==vJuur.väärtus) {
-            return kasPuudOnSamad(pJuur.vasak, vJuur.vasak) && kasPuudOnSamad(pJuur.parem, vJuur.parem);
+    public Tipp getVanemKahendpuu(Tipp tipp, Tipp otsitav) {
+        if (tipp == null || otsitav == kuhjaJuurtipp) {
+            return null;
         }
-        else
-            return false;
-    }
-    private void puudSamaks(Kahendotsimispuu p, Tipp vTipp){
-        if(vTipp==null)
-            return;
-        //isegi kui on avl teeb nagu nii sama puu
-        p.lisa(new Tipp(vTipp.väärtus), false);
-        puudSamaks(p, vTipp.vasak);
-        puudSamaks(p, vTipp.parem);
+        if (tipp.vasak == otsitav || tipp.parem == otsitav) {
+            return tipp;
+        }
 
+        Tipp vasak = getVanemKahendpuu(tipp.vasak, otsitav);
+        if (vasak != null) return vasak;
+
+        return getVanemKahendpuu(tipp.parem, otsitav);
     }
     private void kuvaTeade(String pealkiri, String sisu) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.initOwner(kahendpuuAla.getScene().getWindow());
         alert.setTitle("Teavitus");
         alert.setHeaderText(pealkiri);

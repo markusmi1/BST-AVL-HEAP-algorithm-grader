@@ -1,0 +1,7 @@
+Sisend kuhi:
+[10, 4, 3]
+
+10 töödeldi korrektselt
+VIGA: Õige kuhi - [3], Loodud kuhi - [4]
+4 töödeldi korrektselt
+3 töödeldi korrektselt

@@ -3,11 +3,15 @@ package org.example.algorithmgrader.Util;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class Logija {
-    public static void logiViga(String viga, String algoritm){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(algoritm + "_logi.txt", true))) {
-            bw.append(viga + "\n");
+    public static void logiViga(List<String> vead, String logiFail){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(logiFail, false))) {
+            bw.append(vead.get(0)).append("\n\n");
+            for (String viga : vead.subList(1, vead.size())) {
+                bw.append(viga).append("\n");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
