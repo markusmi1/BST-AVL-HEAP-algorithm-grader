@@ -3,4 +3,4 @@ AVL-puu järjend: [19, 37, 40, 57, 64, 72, 80, 85, 88, 98]      Lisatavad elemend
 
 85 lisati korrektselt
 86 lisati korrektselt
-VIGA: 87 lisati ebakorrektselt, kahendotsimispuu säilis
+87 lisati korrektselt

@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AlgorithmGrader:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AlgorithmGrader.jar</output-path>
+    <root id="archive" name="AlgorithmGrader.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>

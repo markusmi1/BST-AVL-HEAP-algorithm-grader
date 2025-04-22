@@ -454,6 +454,8 @@ public class AvlElemendiLisamine {
         puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
         visuaalsedTipud.clear();
         aktiivsedTipud.clear();
+        metsaJuurtipud.clear();
+        metsaJuurtipud.add(visuaalnePuu.juurtipp);
         ilusPuu();
         uuendaNooli();
         lisatud=false;
@@ -698,6 +700,13 @@ public class AvlElemendiLisamine {
                 kuvaTeade("","Ebakorrektne lisamine, kuid on säilitatud kahendotsimispuu");
             }
             lisatavad.remove(0);
+
+            for (Tipp aktiivneTipp : aktiivsedTipud){
+                aktiivneTipp.visuaalneTipp.setFill(Color.GRAY);
+            }
+            aktiivsedTipud.clear();
+            eemaldaParemAlluv.setVisible(false);
+            eemaldaVasakAlluv.setVisible(false);
             järgmineLisatav();
         }else {
             vigu++;

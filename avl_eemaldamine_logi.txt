@@ -1,5 +1,0 @@
-Sisend:
-AVL-puu järjend: [77, 53, 82, 29, 64, 80, 99, 6, 39, 60, 76, 85, 33, 52]      Eemaldatavad elemendid: [29, 77]
-
-Eemalda AVL-puust tipp: 29 lisati korrektselt
-Eemalda AVL-puust tipp: 77 lisati korrektselt

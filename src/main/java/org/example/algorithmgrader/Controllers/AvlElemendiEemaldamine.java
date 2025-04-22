@@ -350,7 +350,6 @@ public class AvlElemendiEemaldamine {
                                         if (((VisuaalneTipp) c).tipp.parem != null){
                                             metsaJuur = ((VisuaalneTipp) c).tipp.parem;
                                             metsaJuur.tase = visuaalnePuu.leiaTipuTase(visuaalnePuu.juurtipp, ((VisuaalneTipp) c).tipp.parem);
-                                            System.out.println(metsaJuur.tase);
                                             metsaJuurtipud.add(metsaJuur);
                                         }
                                         if (((VisuaalneTipp) c).tipp.vasak != null){
@@ -426,6 +425,8 @@ public class AvlElemendiEemaldamine {
         puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
         visuaalsedTipud.clear();
         aktiivsedTipud.clear();
+        metsaJuurtipud.clear();
+        metsaJuurtipud.add(visuaalnePuu.juurtipp);
         ilusPuu();
         uuendaNooli();
         eemaldatud=false;
@@ -635,6 +636,12 @@ public class AvlElemendiEemaldamine {
                 kuvaTeade("","Ebakorrektne eemaldamine, kuid on säilitatud kahendotsimispuu");
             }
             eemaldatavad.remove(0);
+            for (Tipp aktiivneTipp : aktiivsedTipud){
+                aktiivneTipp.visuaalneTipp.setFill(Color.GRAY);
+            }
+            aktiivsedTipud.clear();
+            eemaldaParemAlluv.setVisible(false);
+            eemaldaVasakAlluv.setVisible(false);
             järgmineEemaldatav();
         }else {
             vigu++;
