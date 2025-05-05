@@ -54,7 +54,7 @@ public class JärjendKahendotsimispuuks {
     private List<String> vead= new ArrayList<>();
     private int vigu;
     private boolean lisatud;
-    private String sisendFail = "sisendid/järjend1.txt";
+    private String sisendFail = "sisendid/järjendKahendotsmispuuks.txt";
     private String logiFail = "järjendKahendotimispuuks_logi.txt";
     public void laePuu() {
         juhend.setText("Kasutusjuhend:\n" +
