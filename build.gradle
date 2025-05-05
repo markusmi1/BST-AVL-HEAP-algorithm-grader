@@ -48,9 +48,7 @@ application {
   mainModule = 'org.example.algorithmgrader'
   mainClass = 'org.example.algorithmgrader.Main'
 }
-jar{
-  enabled false
-}
+
 shadowJar {
   archiveBaseName.set("AlgorithmGrader")
   archiveVersion.set("")
