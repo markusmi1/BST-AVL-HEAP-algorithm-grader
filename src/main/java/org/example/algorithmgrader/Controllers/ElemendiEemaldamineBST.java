@@ -586,6 +586,7 @@ public class ElemendiEemaldamineBST {
             puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
             visuaalsedTipud.clear();
             aktiivsedTipud.clear();
+            metsaJuurtipud.clear();
             ilusPuu();
             uuendaNooli();
             lisaVasakAlluv.setVisible(false);

@@ -147,6 +147,22 @@ public class Kahendotsimispuu {
     }
 
     //AVL-puu operatsioonid
+    public boolean kasOnAvl(Tipp juur){
+        if (juur == null) {
+            return true;
+        }
+        //vasaku ja parema poole kõrguste vahe
+        int vahe = kõrgusteVahe(juur);
+        //kontrollime, millise pöörde peame sooritama ja sooritame
+        if (vahe == 2) {
+            return false;
+        }
+        if (vahe == -2) {
+            return false;
+        }
+
+        return kasOnAvl(juur.vasak) && kasOnAvl(juur.parem);
+    }
     public void listAvlPuuks(List<Integer> list){
         juurtipp=listAvlPuuks(list, 0, list.size()-1);
     }

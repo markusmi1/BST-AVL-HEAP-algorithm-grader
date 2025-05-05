@@ -16,7 +16,7 @@
 
     <Button fx:id="laeUusPuu" layoutX="10" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
     <Button fx:id="eelminePuuOlek" layoutX="10" layoutY="70" text="Eelmine puu olek" onMouseClicked="#laeEelnevPuu" visible="false"/>
-    <Button  fx:id="lukustaPuu" text="Kontolli lisamist" onAction="#lukustaPuuOlek" layoutX="10" layoutY="100" visible="false"/>
+    <Button  fx:id="lukustaPuu" text="Kontrolli lisamist" onAction="#lukustaPuuOlek" layoutX="10" layoutY="100" visible="false"/>
 
     <Label fx:id="juhend" layoutX="270" layoutY="5" wrapText="true" prefWidth="360" style="-fx-font-size: 13px;"></Label>
 

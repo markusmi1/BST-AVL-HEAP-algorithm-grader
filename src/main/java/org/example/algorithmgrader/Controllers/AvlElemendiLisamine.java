@@ -333,7 +333,6 @@ public class AvlElemendiLisamine {
                 }
                 if (aktiivsedTipud.size()<2){
                     aktiivsedTipud.add(tipp);
-                    System.out.println(aktiivsedTipud);
                     if (aktiivsedTipud.size()==1){
                         visuaalneTipp.setFill(Color.GREEN);
                         eemaldaVasakAlluv.setVisible(true);
@@ -689,15 +688,19 @@ public class AvlElemendiLisamine {
             kuvaTeade("","Ei saa olla mitu puud");
             return;
         }
-        if(visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true)) {
+        boolean onBst = visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+        boolean onAvl = visuaalnePuu.kasOnAvl(visuaalnePuu.juurtipp);
+        if(onBst && onAvl) {
             if(kasPuudOnSamad(puu.juurtipp, visuaalnePuu.juurtipp)){
                 vead.add(lisatavad.get(0) + " lisati korrektselt");
                 kuvaTeade("","Korrektne lisamine!");
             }
             else {
+                puu=new Kahendotsimispuu();
+                puudSamaks(puu, visuaalnePuu.juurtipp);
                 vigu++;
-                vead.add("VIGA: " + lisatavad.get(0) + " lisati ebakorrektselt, kahendotsimispuu säilis");
-                kuvaTeade("","Ebakorrektne lisamine, kuid on säilitatud kahendotsimispuu");
+                vead.add("VIGA: " + lisatavad.get(0) + " lisati ebakorrektselt, kuid säilis AVL-puu");
+                kuvaTeade("","Ebakorrektne lisamine, kuid säilis AVL-puu");
             }
             lisatavad.remove(0);
 
@@ -708,10 +711,17 @@ public class AvlElemendiLisamine {
             eemaldaParemAlluv.setVisible(false);
             eemaldaVasakAlluv.setVisible(false);
             järgmineLisatav();
-        }else {
+        }
+        else {
+            if (onBst){
+                vead.add("VIGA: " + lisatavad.get(0) + " lisati ebakorrektselt, AVL-puu ei säilinud");
+                kuvaTeade("","Ebakorrektne lisamine ja ei ole säilinud AVL-puu");
+            }
+            else {
+                vead.add("VIGA: " + lisatavad.get(0) + " lisati ebakorrektselt, kahendotsimispuu ei säilinud");
+                kuvaTeade("","Ebakorrektne lisamine ja puu ei ole enam Kahendotsimispuu!");
+            }
             vigu++;
-            vead.add("VIGA: " + lisatavad.get(0) + " lisati ebakorrektselt, kahendotsimispuu ei säilinud");
-            kuvaTeade("","Ebakorrektne lisamine ja puu ei ole enam Kahendotsimispuu!");
             visuaalnePuu = new Kahendotsimispuu();
             puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
             visuaalsedTipud.clear();
@@ -726,14 +736,14 @@ public class AvlElemendiLisamine {
         laeEelnevPuu.setVisible(false);
         lukustaPuu.setVisible(false);
     }
-    public boolean kasTippOnSamasHarus(Tipp ülem, Tipp otsitav){
-        if (ülem == null)
+    public boolean kasTippOnSamasHarus(Tipp ulem, Tipp otsitav){
+        if (ulem == null)
             return false;
 
-        if (ülem == otsitav)
+        if (ulem == otsitav)
             return true;
 
-        return kasTippOnSamasHarus(ülem.vasak, otsitav) || kasTippOnSamasHarus(ülem.parem, otsitav);
+        return kasTippOnSamasHarus(ulem.vasak, otsitav) || kasTippOnSamasHarus(ulem.parem, otsitav);
     }
     private boolean kasPuudOnSamad(Tipp pJuur, Tipp vJuur){
         if (pJuur==null && vJuur==null)

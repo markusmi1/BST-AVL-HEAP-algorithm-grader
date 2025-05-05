@@ -176,7 +176,7 @@ public class JärjendiKuhjastamine {
             aktiivsedTipud.remove(tipp);
             //lukustaPuu.setVisible(true);
             //lisatud = true;
-            järgmineTippLabel.setText("Kuhjasta puu!");
+            järgmineTippLabel.setText("Kuhjasta puu allaviimiste teel!");
             kahendpuuAla.getChildren().removeAll(pesad);
             pesad.clear();
             //järgmineTipp.setVisible(true);

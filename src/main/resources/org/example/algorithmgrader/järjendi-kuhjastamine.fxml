@@ -15,7 +15,7 @@
     <Label fx:id="järgmineTippLabel" layoutX="10" layoutY="20" style="-fx-font-size: 15px;"/>
     <Label fx:id="järgmisedTipudLabel" layoutX="10" layoutY="45" prefWidth="250" style="-fx-font-size: 12px;"/>
 
-    <Button fx:id="laeUusPuu" layoutX="10" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
+    <Button fx:id="laeUusPuu" layoutX="10" layoutY="70" text="Lae uus kuhi" onMouseClicked="#laePuu"/>
 
     <Button fx:id="eelminePuuOlek" layoutX="105" layoutY="70" text="Eelmine puu olek" onMouseClicked="#laeEelnevKuhi" visible="false"/>
 

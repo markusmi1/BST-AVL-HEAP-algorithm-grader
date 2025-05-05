@@ -248,7 +248,6 @@ public class AvlElemendiEemaldamine {
                     }
                     else if (aktiivsedTipud.size()<2){
                         aktiivsedTipud.add(tipp);
-                        System.out.println(aktiivsedTipud);
                         if (aktiivsedTipud.size()==1){
                             visuaalneTipp.setFill(Color.GREEN);
                             eemaldaVasakAlluv.setVisible(true);
@@ -623,7 +622,9 @@ public class AvlElemendiEemaldamine {
             kuvaTeade("","Ei saa olla mitu puud");
             return;
         }
-        if(visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true)) {
+        boolean onBst = visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+        boolean onAvl = visuaalnePuu.kasOnAvl(visuaalnePuu.juurtipp);
+        if(onBst && onAvl) {
 
             if(kasPuudOnSamad(puu.juurtipp, visuaalnePuu.juurtipp)){
                 vead.add(eemaldatavad.get(0) + " eemaldati korrektselt");
@@ -632,8 +633,8 @@ public class AvlElemendiEemaldamine {
                 puu=new Kahendotsimispuu();
                 puudSamaks(puu, visuaalnePuu.juurtipp);
                 vigu++;
-                vead.add("VIGA: " +eemaldatavad.get(0)+ " eemaldati ebakorrektselt, kahendotsimispuu säilis");
-                kuvaTeade("","Ebakorrektne eemaldamine, kuid on säilitatud kahendotsimispuu");
+                vead.add("VIGA: " +eemaldatavad.get(0)+ " eemaldati ebakorrektselt, AVL-puu säilis");
+                kuvaTeade("","Ebakorrektne eemaldamine, kuid on säilitatud AVL-puu");
             }
             eemaldatavad.remove(0);
             for (Tipp aktiivneTipp : aktiivsedTipud){
@@ -644,9 +645,15 @@ public class AvlElemendiEemaldamine {
             eemaldaVasakAlluv.setVisible(false);
             järgmineEemaldatav();
         }else {
+            if (onBst){
+                vead.add("VIGA: " + eemaldatavad.get(0) + " eemaldati ebakorrektselt, AVL-puu ei säilinud");
+                kuvaTeade("","Ebakorrektne eemaldamine ja ei ole säilinud AVL-puu");
+            }else {
+                vead.add("VIGA: " + eemaldatavad.get(0) + " eemaldati ebakorrektselt, kahendotsimispuu ei säilinud");
+                kuvaTeade("","Ebakorrektne eemaldamine ja puu ei ole enam Kahendotsimispuu!");
+            }
+
             vigu++;
-            vead.add("VIGA: " + eemaldatavad.get(0) + " eemaldati ebakorrektselt, kahendotsimispuu ei säilinud");
-            kuvaTeade("","Ebakorrektne eemaldamine ja puu ei ole enam Kahendotsimispuu!");
             visuaalnePuu.printPuuJaVisuaalnePuu(eelnevaSeisugaPuu.juurtipp);
             visuaalnePuu = new Kahendotsimispuu();
             puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
@@ -683,14 +690,14 @@ public class AvlElemendiEemaldamine {
         }
         kahendpuuAla.getChildren().addAll(nooled);
     }
-    public boolean kasTippOnSamasHarus(Tipp ülem, Tipp otsitav){
-        if (ülem == null)
+    public boolean kasTippOnSamasHarus(Tipp ulem, Tipp otsitav){
+        if (ulem == null)
             return false;
 
-        if (ülem == otsitav)
+        if (ulem == otsitav)
             return true;
 
-        return kasTippOnSamasHarus(ülem.vasak, otsitav) || kasTippOnSamasHarus(ülem.parem, otsitav);
+        return kasTippOnSamasHarus(ulem.vasak, otsitav) || kasTippOnSamasHarus(ulem.parem, otsitav);
     }
     private boolean kasPuudOnSamad(Tipp pJuur, Tipp vJuur){
         if (pJuur==null && vJuur==null)

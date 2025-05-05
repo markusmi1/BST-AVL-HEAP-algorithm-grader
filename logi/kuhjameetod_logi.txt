@@ -1,0 +1,12 @@
+Sisend kuhi:
+[10, 8, 3, 4, 5]
+
+VIGA: Õige kuhi - [8, 5, 3, 4], Loodud kuhi - [10, 8, 3, 4]
+10 töödeldi korrektselt
+ALGORITMILINE VIGA: Üritati töödelda elementi mis ei olnud kuhja viimane element
+VIGA: Õige kuhi - [5, 4, 3], Loodud kuhi - [4, 5, 3]
+8 töödeldi korrektselt
+VIGA: Õige kuhi - [4, 3], Loodud kuhi - [3, 4]
+5 töödeldi korrektselt
+4 töödeldi korrektselt
+3 töödeldi korrektselt
