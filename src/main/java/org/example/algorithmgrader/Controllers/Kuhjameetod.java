@@ -285,7 +285,6 @@ public class Kuhjameetod {
         massiiv=new ArrayList<>(visuaalneKuhi.kuhi);
 
         visuaalneMassiiv();
-
         ilusPuu();
     }
     public void lukustaKuhi(){
@@ -318,8 +317,6 @@ public class Kuhjameetod {
         lukustaPuu.setVisible(false);
         laeEelnevPuu.setVisible(false);
         vahetaTipud.setVisible(false);
-        System.out.println("\n");
-
     }
     private void visuaalneMassiiv(){
         if (töödeldud.isEmpty()){

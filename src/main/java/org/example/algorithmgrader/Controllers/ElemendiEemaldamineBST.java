@@ -164,8 +164,6 @@ public class ElemendiEemaldamineBST {
             puuElementideArv = puu.puuElementideArv(puu.juurtipp);
             puu.eemaldaTipp(puu.juurtipp, eemaldatavad.get(0), false);
 
-            puu.printPuuJaVisuaalnePuu(puu.juurtipp);
-
             eemaldatav.setText("Eemalda kahendotsingupuust tipp: " + eemaldatavad.get(0));
             eemaldatavadLabel.setText("Järgmised eemaldatavad: " + eemaldatavad.subList(1, eemaldatavad.size()));
             hetkelEemaldatav = eemaldatavad.get(0);

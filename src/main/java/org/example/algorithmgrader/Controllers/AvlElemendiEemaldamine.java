@@ -654,7 +654,6 @@ public class AvlElemendiEemaldamine {
             }
 
             vigu++;
-            visuaalnePuu.printPuuJaVisuaalnePuu(eelnevaSeisugaPuu.juurtipp);
             visuaalnePuu = new Kahendotsimispuu();
             puudSamaks(visuaalnePuu, eelnevaSeisugaPuu.juurtipp);
             visuaalsedTipud.clear();

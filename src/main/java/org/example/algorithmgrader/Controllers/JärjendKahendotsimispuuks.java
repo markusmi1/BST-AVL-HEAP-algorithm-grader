@@ -345,7 +345,6 @@ public class JärjendKahendotsimispuuks {
         kahendpuuAla.getChildren().addAll(nooled);
     }
     public void lukustaPuuOlek(){
-        System.out.println(visuaalnePuu.juurtipp);
         if(visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true)) {
             if(kasPuudOnSamad(puu.juurtipp, visuaalnePuu.juurtipp)){
                 eelnevaSeisugaPuu = new Kahendotsimispuu();
