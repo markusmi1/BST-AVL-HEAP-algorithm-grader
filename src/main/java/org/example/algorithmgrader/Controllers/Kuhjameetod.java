@@ -56,7 +56,7 @@ public class Kuhjameetod {
 
 
     public void laeKuhi() {
-        juhend.setText("Kasutusjuhend:\n" +
+        juhend.setText("Kasutusjuhend: Tipu asukohtade muutused kuvatakse massiivis!\n" +
                 "- Kontrolli sammu: Kontrollib kuhjameetodi sammu, Samm on 1 elemendi töötlemine ja kuhja struktuuri taastamine.\n" +
                 "- Eelmine puu olek: Laeb viimati kontrollitud kuhja.\n" +
                 "- Märgi element töödelduks: Lisab elemendi massiivi lõppu ja eemaldab kuhja struktuurist.\n" +
