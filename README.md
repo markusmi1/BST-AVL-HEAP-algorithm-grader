@@ -2,7 +2,7 @@
 
 Programmi käivitamiseks sisesta terminali
 ```bash
-gradlew run
+java -jar AlgorithmGrader.jar
 ```
 
-Või käivita src/java/org/example/algorithmgrader/AlgorithmGrader.java fail
+Sisendite muutmiseks muuta faile kaustas /sisendid
