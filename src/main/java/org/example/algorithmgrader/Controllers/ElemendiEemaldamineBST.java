@@ -112,6 +112,18 @@ public class ElemendiEemaldamineBST {
         if (tipp== null)
             return;
 
+        if (metsaJuurtipud.size()>1 && metsaJuurtipud.contains(tipp)){
+            for (VisuaalneTipp t : visuaalsedTipud){
+                if(t.tipp!=tipp && t.getCenterX()==x){
+                    if (x>kahendpuuAla.getWidth()/2){
+                        x=x-25;
+                    }else {
+                        x=x+25;
+                    }
+                    break;
+                }
+            }
+        }
         tipp.visuaalneTipp = new VisuaalneTipp(x, y, tipuRaadius, tipp);
         tipp.visuaalneTipp.setFill(Color.GRAY);
 
@@ -559,7 +571,12 @@ public class ElemendiEemaldamineBST {
         kahendpuuAla.getChildren().addAll(nooled);
     }
     public void lukustaPuuOlek(){
-
+        if (metsaJuurtipud.size()>1){
+            vigu++;
+            vead.add("VIGA: eemaldamist kontrolliti kui ekraanil oli mitu puud");
+            kuvaTeade("","Ei saa olla mitu puud");
+            return;
+        }
         if(visuaalnePuu.kasOnKahendotsimispuu(visuaalnePuu.juurtipp, Integer.MIN_VALUE, Integer.MAX_VALUE, true)
                 && puuElementideArv-1 == visuaalnePuu.puuElementideArv(visuaalnePuu.juurtipp)) {
             if(kasPuudOnSamad(puu.juurtipp, visuaalnePuu.juurtipp)){
