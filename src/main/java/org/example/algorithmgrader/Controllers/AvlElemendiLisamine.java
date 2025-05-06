@@ -156,13 +156,19 @@ public class AvlElemendiLisamine {
             return;
         if (metsaJuurtipud.size()>1 && metsaJuurtipud.contains(tipp)){
             for (VisuaalneTipp t : visuaalsedTipud){
-                if(t.tipp!=tipp && t.getCenterX()==x){
+                if(t.tipp!=tipp && (t.getCenterX()<x+10 && t.getCenterX()>x-10)){
                     if (x>kahendpuuAla.getWidth()/2){
-                        x=x-25;
+                        x=x-40;
                     }else {
-                        x=x+25;
+                        x=x+40;
                     }
                     break;
+                } else if (t.tipp != tipp && metsaJuurtipud.contains(t.tipp)) {
+                    if (x>kahendpuuAla.getWidth()-JUURE_X/Math.pow(2, tase-1)){
+                        x = (int) (kahendpuuAla.getWidth() - (int) (JUURE_X/Math.pow(2, tase-1)));
+                    }else if(x<JUURE_X/Math.pow(2, tase-1)){
+                        x = (int) (JUURE_X/Math.pow(2, tase-1));
+                    }
                 }
             }
         }

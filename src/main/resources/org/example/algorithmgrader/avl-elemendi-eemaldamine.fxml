@@ -26,7 +26,7 @@
     <Button fx:id="eemaldaVasakAlluv" layoutX="130" layoutY="70" text="Eemalda seos Vasaku alluvaga" visible="false"/>
     <Button fx:id="eemaldaParemAlluv" layoutX="310" layoutY="100" text="Eemalda seos Parema alluvaga" visible="false"/>
 
-    <Button fx:id="kustutaTipp" layoutX="490" layoutY="100" text="Kustuta tipp" visible="false"/>
+    <Button fx:id="kustutaTipp" layoutX="10" layoutY="100" text="Kustuta tipp" visible="false"/>
 
     <Label fx:id="juhend" layoutX="340" layoutY="5" wrapText="true" prefWidth="370" style="-fx-font-size: 13px;"></Label>
 

@@ -116,19 +116,26 @@ public class AvlElemendiEemaldamine {
 
         järgmineEemaldatav();
         laeUusPuu.setVisible(false);
+        laeEelnevPuu.setVisible(true);
     }
     public void looVisuaalnePuu(Tipp tipp, int tase, int x, int y, boolean vasak){
         if (tipp== null)
             return;
         if (metsaJuurtipud.size()>1 && metsaJuurtipud.contains(tipp)){
             for (VisuaalneTipp t : visuaalsedTipud){
-                if(t.tipp!=tipp && t.getCenterX()==x){
+                if(t.tipp!=tipp && (t.getCenterX()<x+10 && t.getCenterX()>x-10)){
                     if (x>kahendpuuAla.getWidth()/2){
-                        x=x-25;
+                        x=x-40;
                     }else {
-                        x=x+25;
+                        x=x+40;
                     }
                     break;
+                } else if (t.tipp != tipp && metsaJuurtipud.contains(t.tipp)) {
+                    if (x>kahendpuuAla.getWidth()-JUURE_X/Math.pow(2, tase-1)){
+                        x = (int) (kahendpuuAla.getWidth() - (int) (JUURE_X/Math.pow(2, tase-1)));
+                    }else if(x<JUURE_X/Math.pow(2, tase-1)){
+                        x = (int) (JUURE_X/Math.pow(2, tase-1));
+                    }
                 }
             }
         }
@@ -154,7 +161,7 @@ public class AvlElemendiEemaldamine {
 
     public void järgmineEemaldatav(){
         lukustaPuu.setVisible(false);
-        laeEelnevPuu.setVisible(false);
+        //laeEelnevPuu.setVisible(false);
         if (!eemaldatavad.isEmpty()) {
             eelnevaSeisugaPuu = new Kahendotsimispuu();
             puudSamaks(eelnevaSeisugaPuu, puu.juurtipp);
@@ -229,7 +236,7 @@ public class AvlElemendiEemaldamine {
                         lisaParemAlluv.setLayoutX(10);
                         eemaldaParemAlluv.setLayoutX(10);
                         eemaldaVasakAlluv.setLayoutX(10);
-                        kustutaTipp.setLayoutX(190);
+                       // kustutaTipp.setLayoutX(190);
                     }
 
                     if(hetkelMuudetakseTippu){
@@ -441,12 +448,13 @@ public class AvlElemendiEemaldamine {
         uuendaNooli();
         eemaldatud=false;
 
-        laeEelnevPuu.setVisible(false);
+       // laeEelnevPuu.setVisible(false);
         lukustaPuu.setVisible(false);
         eemaldaVasakAlluv.setVisible(false);
         eemaldaParemAlluv.setVisible(false);
         lisaVasakAlluv.setVisible(false);
         lisaParemAlluv.setVisible(false);
+        kustutaTipp.setVisible(false);
     }
 
     private void lisaVasakAlluv(){
@@ -676,7 +684,7 @@ public class AvlElemendiEemaldamine {
             uuendaNooli();
 
         }
-        laeEelnevPuu.setVisible(false);
+       // laeEelnevPuu.setVisible(false);
         lukustaPuu.setVisible(false);
     }
     private void uuendaNooli(){

@@ -16,7 +16,7 @@
 
     <Button fx:id="laeUusPuu" layoutX="10" layoutY="70" text="Lae uus puu" onMouseClicked="#laePuu"/>
     <Button fx:id="laeEelnevPuu" layoutX="10" layoutY="70" text="Lae eelmine puu olek" onMouseClicked="#laeEelnevPuu" visible="false"/>
-    <Button fx:id="kustutaTipp" layoutX="10" layoutY="70" text="Kustuta tipp" visible="false"/>
+    <Button fx:id="kustutaTipp" layoutX="10" layoutY="100" text="Kustuta tipp" visible="false"/>
 
     <Button fx:id="lukustaPuu" layoutX="10" layoutY="100" text="Kontrolli eemaldust" onMouseClicked="#lukustaPuuOlek" visible="false"/>
 

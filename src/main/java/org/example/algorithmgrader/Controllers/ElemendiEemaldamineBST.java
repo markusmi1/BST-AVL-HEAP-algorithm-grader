@@ -90,6 +90,7 @@ public class ElemendiEemaldamineBST {
 
         järgmineEemaldatav();
         laeUusPuu.setVisible(false);
+        laeEelnevPuu.setVisible(true);
     }
     public void ilusPuu(){
         kahendpuuAla.getChildren().clear();
@@ -105,8 +106,11 @@ public class ElemendiEemaldamineBST {
         ilusPuu();
         uuendaNooli();
 
-        laeEelnevPuu.setVisible(false);
+        //laeEelnevPuu.setVisible(false);
         lukustaPuu.setVisible(false);
+        kustutaTipp.setVisible(false);
+        lisaParemAlluv.setVisible(false);
+        lisaVasakAlluv.setVisible(false);
     }
     public void looVisuaalnePuu(Tipp tipp, int tase, int x, int y, boolean vasak){
         if (tipp== null)
@@ -114,13 +118,19 @@ public class ElemendiEemaldamineBST {
 
         if (metsaJuurtipud.size()>1 && metsaJuurtipud.contains(tipp)){
             for (VisuaalneTipp t : visuaalsedTipud){
-                if(t.tipp!=tipp && t.getCenterX()==x){
+                if(t.tipp!=tipp && (t.getCenterX()<x+10 && t.getCenterX()>x-10)){
                     if (x>kahendpuuAla.getWidth()/2){
-                        x=x-25;
+                        x=x-40;
                     }else {
-                        x=x+25;
+                        x=x+40;
                     }
                     break;
+                } else if (t.tipp != tipp && metsaJuurtipud.contains(t.tipp)) {
+                    if (x>kahendpuuAla.getWidth()-JUURE_X/Math.pow(2, tase-1)){
+                        x = (int) (kahendpuuAla.getWidth() - (int) (JUURE_X/Math.pow(2, tase-1)));
+                    }else if(x<JUURE_X/Math.pow(2, tase-1)){
+                        x = (int) (JUURE_X/Math.pow(2, tase-1));
+                    }
                 }
             }
         }
@@ -168,7 +178,7 @@ public class ElemendiEemaldamineBST {
     }
     public void järgmineEemaldatav(){
         lukustaPuu.setVisible(false);
-        laeEelnevPuu.setVisible(false);
+       // laeEelnevPuu.setVisible(false);
         if (!eemaldatavad.isEmpty()) {
 
             eelnevaSeisugaPuu = new Kahendotsimispuu();
@@ -400,7 +410,7 @@ public class ElemendiEemaldamineBST {
                             }
                         }
                     }
-                    laeEelnevPuu.setVisible(true);
+                    //laeEelnevPuu.setVisible(true);
                     lukustaPuu.setVisible(true);
 
                 });
@@ -607,7 +617,7 @@ public class ElemendiEemaldamineBST {
             lisaVasakAlluv.setVisible(false);
             lisaParemAlluv.setVisible(false);
         }
-        laeEelnevPuu.setVisible(false);
+        //laeEelnevPuu.setVisible(false);
         lukustaPuu.setVisible(false);
     }
     private void puudSamaks(Kahendotsimispuu p, Tipp vTipp){
