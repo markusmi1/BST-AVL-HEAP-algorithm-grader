@@ -6,19 +6,15 @@ import java.util.List;
 
 public class Kahendotsimispuu {
     public Tipp juurtipp;
-    public Tipp viimatiLisatudTipp;
-    public List<Tipp> tipud = new ArrayList<>();
-
 
     public void lisa(Tipp uusTipp, boolean avl) {
         juurtipp = lisaRekursiivselt(juurtipp, uusTipp, avl);
     }
 
-
     private Tipp lisaRekursiivselt(Tipp tipp, Tipp uusTipp, boolean avl) {
         if (tipp == null || tipp.väärtus==-1) {
-            viimatiLisatudTipp = uusTipp;
-            tipud.add(uusTipp);
+
+            //tipud.add(uusTipp);
             return uusTipp;
         }
         if (uusTipp.väärtus < tipp.getVäärtus()) {
@@ -177,66 +173,6 @@ public class Kahendotsimispuu {
         tipp.parem = listAvlPuuks(list, mid + 1, lõpp);
 
         return tipp;
-    }
-    /**
-     * lisab avl puusse kirje
-     * @param juur ette antud puu juur
-     * @param väärtus lisatav väärtus
-     * @return tagastab tasakaalustatud AVL puu juure kuhu lisati kirje
-     */
-    public  Tipp lisaKirje(Tipp juur, int väärtus) {
-        //kui juur on null siis loome puu
-        if(juur==null){
-            return new Tipp(väärtus);
-        }
-        //kui on suurem või võrdne lisame paremale
-        if(juur.väärtus<=väärtus){
-            juur.parem = lisaKirje(juur.parem, väärtus);
-        }
-        //vastasel korral liigume vasakule
-        else{
-            juur.vasak = lisaKirje(juur.vasak, väärtus);
-        }
-        //tagastame tasakaalustatud puu
-        return tasakaalustaPuu(juur);
-    }
-
-    /**
-     * eemaldab avl puust vajaliku kirje
-     * @param juur ette antud puu juur
-     * @param väärtus eemaldatav väärtus
-     * @return tagastab tasakaalustatud puu juure kust eemaldati kirje
-     */
-    public Tipp eemaldaKirje(Tipp juur, int väärtus) {
-        if(juur==null){
-            return null;
-        }
-        //kui väärtus on suurem/võrdne liigume paremale muidu vasakule
-        if(juur.väärtus>väärtus){
-            juur.vasak = eemaldaKirje(juur.vasak, väärtus);
-        } else if (juur.väärtus<väärtus) {
-            juur.parem = eemaldaKirje(juur.parem, väärtus);
-        }
-        else{
-            //lehttipp
-            if (juur.vasak==null && juur.parem ==null){
-                juur=null;
-            }
-            //parem pool null
-            else if (juur.parem == null){
-                juur=juur.vasak;
-                //parem ja vasak null
-            }else if(juur.vasak!=null){
-                Tipp järgnev = leiaJärgnev(juur.parem);
-                juur.väärtus = järgnev.väärtus;
-                juur.parem = eemaldaKirje(juur.parem, järgnev.väärtus);
-                //vasak pool null
-            }else {
-                juur=juur.parem;
-            }
-        }
-        //tagastame tasakaalustatud puu
-        return tasakaalustaPuu(juur);
     }
 
     /**

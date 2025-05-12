@@ -5,6 +5,8 @@ public class Tipp {
     public Tipp vasak;
     public Tipp parem;
     public VisuaalneTipp visuaalneTipp;
+
+    // metsa kuvamiseks
     public int tase = 0;
 
     //Elemendi indeks kuhjas
@@ -27,14 +29,9 @@ public class Tipp {
         this.parem = null;
 
     }
-
-
     public int getVäärtus() {
         return väärtus;
     }
-    /*public VisuaalneTipp getVisuaalneTipp(){
-        return visuaalneTipp;
-    }*/
 
     @Override
     public String toString() {

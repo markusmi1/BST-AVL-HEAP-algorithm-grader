@@ -23,8 +23,6 @@ public class Kuhi {
         return (ülemuseIndeks < 0) ? -1 : ülemuseIndeks;
     }
 
-    //Ülesanne 2
-    //Koostada meetod, mis massiivina (või listina) etteantud kahendkuhjast  loob puu juurtipuga Tipp juur, mida saab siis kuvada teegi dendroloj abil.
     public Tipp looTipp(int tipuIndeksKuhjas) {//kui tahad tervet puud, siis indeks = 0
         if(tipuIndeksKuhjas == -1) return null;
         Tipp vasakAlluv = looTipp(leiaVasakuAlluvaIndeks(tipuIndeksKuhjas));
@@ -32,9 +30,6 @@ public class Kuhi {
         return new Tipp(kuhi.get(tipuIndeksKuhjas), vasakAlluv, paremAlluv, tipuIndeksKuhjas);
     }
 
-    //Koostada meetodid
-    //kuhja kirje mullina ülesviimiseks;
-    //kuhja kirje mullina allaviimiseks.
     public void viiMullinaÜles(int kirjeIndeks) {
         int ülemuseIndeks = leiaÜlemuseIndeks(kirjeIndeks);
 

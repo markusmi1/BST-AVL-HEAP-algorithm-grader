@@ -9,6 +9,6 @@ public class Koordinaadid {
     public static final int JUURE_Y = 25;
 
     public static final int pesaX = 40;
-    public static final int pesaY = 60;
+    public static final int pesaY = 50;
     public static  final int pesaRaadius = 15;
 }

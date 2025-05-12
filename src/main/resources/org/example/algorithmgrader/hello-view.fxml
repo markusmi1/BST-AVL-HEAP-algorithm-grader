@@ -5,7 +5,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
          prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1"
-         xmlns="http://javafx.com/javafx/19" fx:controller="org.example.algorithmgrader.Controllers.HelloController">
+         xmlns="http://javafx.com/javafx/19" >
   <Tab fx:id="avaleht" text="Avaleht">
     <fx:include source="avaleht.fxml"/>
   </Tab>
