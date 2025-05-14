@@ -55,7 +55,7 @@ public class JärjendKahendotsimispuuks {
     private int vigu;
     private boolean lisatud;
     private String sisendFail = "sisendid/järjendKahendotsimispuuks.txt";
-    private String logiFail = "järjendKahendotimispuuks_logi.txt";
+    private String logiFail = "järjendKahendotsimispuuks_logi.txt";
     public void laePuu() {
         juhend.setText("Kasutusjuhend:\n" +
                 "- Kontrolli lisamist: Kontrollib kas tipp on lisatud korrektselt, ja võtab järjendist uue tipu lisamiseks.\n" +

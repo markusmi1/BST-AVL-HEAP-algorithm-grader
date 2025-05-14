@@ -1,6 +1,12 @@
 Sisend: [86, 18, 30, 74, 88]
-Kompaktne kahendpuu järjend: [88, 86, 30, 18, 74]
 
-VIGA: Tippu 74 lisades oleks kaotatud kompaktne kahendpuu
-ALGORITMILINE VIGA: Ülemtipp väärtusega 18 üritati vahetada vasaku alluvaga väärtusega 74, kui parema väärtus on 88
+86 lisati korrektselt
+VIGA: Tippu 18 lisades oleks kaotatud kompaktne kahendpuu
+18 lisati korrektselt
+30 lisati korrektselt
+74 lisati korrektselt
+88 lisati korrektselt
+
+Kompaktne kahendpuu jÃ¤rjend: [88, 86, 30, 18, 74]
+VIGA: Kuhi peaks olema - [88, 86, 30, 18, 74], aga on - [86, 18, 30, 74, 88]
 Vigu: 2

@@ -1,0 +1,15 @@
+Sisend: [40, 35, 36, 60, 44, 41, 55, 44, 43, 45, 80]
+
+40 lisati korrektselt
+35 lisati korrektselt
+36 lisati korrektselt
+VIGA: 60 lisamisel kaotati kahendotsimispuu struktuur
+60 lisati korrektselt
+44 lisati korrektselt
+41 lisati korrektselt
+55 lisati korrektselt
+VIGA: 44 lisamisel kaotati kahendotsimispuu struktuur
+44 lisati korrektselt
+43 lisati korrektselt
+45 lisati korrektselt
+80 lisati korrektselt

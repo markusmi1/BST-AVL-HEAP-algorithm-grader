@@ -64,7 +64,7 @@ public class JärjendiKuhjastamine {
         vead=new ArrayList<>();
         vigu = 0;
         loeFailistVäärtused(sisendFail);
-        vead.add("Sisend: " + järjend + "\n");
+        vead.add("Sisend: " + järjend);
 
         kuhi = new Kuhi();
         visuaalneKuhi = new Kuhi();
@@ -163,6 +163,8 @@ public class JärjendiKuhjastamine {
             }else {
                 visuaalneKuhi.kuhi.add(praeguneTipp.väärtus);
                 if (visuaalneKuhi.leiaÜlemuseIndeks(visuaalneKuhi.kuhi.size()-1)!=tipp.indeks || tipp.vasak==null){
+                    vigu++;
+                    vead.add("VIGA: Tippu " + praeguneTipp.väärtus + " lisades oleks kaotatud kompaktne kahendpuu");
                     kuvaTeade("Viga","Vale tipu lisamine, puu ei ole kompaktne");
                     visuaalneKuhi.kuhi.remove(visuaalneKuhi.kuhi.size()-1);
                     return;
@@ -172,14 +174,13 @@ public class JärjendiKuhjastamine {
                 lisaTippEkraanile(tipp.parem, visuaalneTipp, false);
                 ilusPuu();
             }
-
+            vead.add(praeguneTipp.väärtus + " lisati korrektselt");
             aktiivsedTipud.remove(tipp);
-            //lukustaPuu.setVisible(true);
-            //lisatud = true;
+
             järgmineTippLabel.setText("Kuhjasta puu allaviimiste teel!");
             kahendpuuAla.getChildren().removeAll(pesad);
             pesad.clear();
-            //järgmineTipp.setVisible(true);
+
             järjend.remove(0);
             järgmineLisatavTipp();
             uuendaNooli();
@@ -240,7 +241,7 @@ public class JärjendiKuhjastamine {
             pesad.clear();
             elemendidLisatud=true;
             lukustaPuu.setVisible(true);
-            vead.set(0, vead.get(0) + "Kompaktne kahendpuu järjend: " + kuhi.kuhi);
+            vead.add("\nKompaktne kahendpuu järjend: " + kuhi.kuhi);
 
             uuendaNooli();
         }
