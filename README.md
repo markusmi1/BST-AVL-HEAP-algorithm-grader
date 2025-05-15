@@ -1,4 +1,4 @@
-# Kahendotsimispuu- ja kuhjaalgoritmide läbimängija ka hindaja
+# Kahendotsimispuu- ja kuhjaalgoritmide läbimängija ja hindaja
 
 Programmi käivitamiseks sisesta terminali
 ```bash
