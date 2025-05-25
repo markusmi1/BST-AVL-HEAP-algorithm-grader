@@ -1,7 +1,7 @@
 Sisend: [86, 18, 30, 74, 88]
 
 86 lisati korrektselt
-VIGA: Tippu 18 lisades oleks kaotatud kompaktne kahendpuu
+VIGA: Tippu 18 lisades kaotati kompaktne kahendpuu
 18 lisati korrektselt
 30 lisati korrektselt
 74 lisati korrektselt
