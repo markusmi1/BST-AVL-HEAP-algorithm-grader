@@ -148,8 +148,6 @@ public class AvlElemendiEemaldamine {
 
         int xKoordMuutus=(int) (JUURE_X/Math.pow(2, tase));
 
-        //liigutatavTipp(tipp.visuaalneTipp);
-
         looVisuaalnePuu(tipp.vasak, tase+1, x-xKoordMuutus, y+pesaY, true);
         looVisuaalnePuu(tipp.parem, tase+1, x+xKoordMuutus, y+pesaY, false);
     }
@@ -255,8 +253,10 @@ public class AvlElemendiEemaldamine {
                             eemaldaParemAlluv.setVisible(false);
                         } else if (aktiivsedTipud.get(0).visuaalneTipp.getFill()==Color.GREEN){
 
-                            eemaldaVasakAlluv.setVisible(true);
-                            eemaldaParemAlluv.setVisible(true);
+                            if (tipp.vasak!=null)
+                                eemaldaVasakAlluv.setVisible(true);
+                            if (tipp.parem!=null)
+                                eemaldaParemAlluv.setVisible(true);
                             if (!eemaldatud)
                                 kustutaTipp.setVisible(true);
                         }
@@ -268,8 +268,10 @@ public class AvlElemendiEemaldamine {
                         aktiivsedTipud.add(tipp);
                         if (aktiivsedTipud.size()==1){
                             visuaalneTipp.setFill(Color.GREEN);
-                            eemaldaVasakAlluv.setVisible(true);
-                            eemaldaParemAlluv.setVisible(true);
+                            if (tipp.vasak!=null)
+                                eemaldaVasakAlluv.setVisible(true);
+                            if (tipp.parem!=null)
+                                eemaldaParemAlluv.setVisible(true);
                             if (!eemaldatud)
                                 kustutaTipp.setVisible(true);
                         }else if (aktiivsedTipud.get(0).visuaalneTipp.getFill()==Color.GREEN){

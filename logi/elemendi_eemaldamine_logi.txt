@@ -1,6 +1,6 @@
 Sisend:
-Kahendotsimispuu j�rjend: [5,9, 11, 4, 1, 6, 3, 15, 7, 13, 14, 10, 8, 2]      Eemaldatavad elemendid: [6, 11]
+Kahendotsimispuu järjend: [5,9, 11, 4, 1, 6, 3, 15, 7, 13, 14, 10, 8, 2]      Eemaldatavad elemendid: [6, 11]
 
-VIGA: 6 eemaldati ebakorrektselt, kahendotsimispuu struktuur kaotati
 6 eemaldati korrektselt
 11 eemaldati korrektselt
+VIGA: 11 eemaldati ebakorrektselt, säilis kahendotsimispuu

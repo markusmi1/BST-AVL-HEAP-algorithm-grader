@@ -1,7 +1,7 @@
 Sisend:
-AVL-puu järjend: [19, 37, 40, 57, 64, 72, 80, 85, 88, 100]      Lisatavad elemendid: [85, 86, 87]
+AVL-puu järjend: [19, 37, 40, 57, 64, 72, 80, 85, 88, 97]      Lisatavad elemendid: [85, 86, 87]
 
 85 lisati korrektselt
 86 lisati korrektselt
-VIGA: 87 lisati ebakorrektselt, kahendotsimispuu ei säilinud
+VIGA: 87 lisati ebakorrektselt, AVL-puu ei säilinud
 87 lisati korrektselt

@@ -306,13 +306,7 @@ public class AvlElemendiLisamine {
         grupp.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             if (e.getClickCount() == 1) {
                 StringBuilder inputText = new StringBuilder(tekst.getText());
-                /*if(hetkelMuudetakseTippu){
-                    //muudame hetke tipu väärtuse õigeks
-                    //aktiivsedTipud.get(0).visuaalneTipp.setFill(Color.GRAY);
 
-                    hetkelMuudetakseTippu = false;
-                    //aktiivsedTipud.clear();
-                }*/
                 if (laeEelnevPuu.isVisible()){
                     lisaVasakAlluv.setLayoutX(143);
                     lisaParemAlluv.setLayoutX(143);
@@ -341,8 +335,10 @@ public class AvlElemendiLisamine {
                             looPesad(aktiivsedTipud.get(0), aktiivsedTipud.get(0).visuaalneTipp);
                         }
 
-                        eemaldaVasakAlluv.setVisible(true);
-                        eemaldaParemAlluv.setVisible(true);
+                        if (tipp.vasak!=null)
+                            eemaldaVasakAlluv.setVisible(true);
+                        if (tipp.parem!=null)
+                            eemaldaParemAlluv.setVisible(true);
                     }
                     lisaVasakAlluv.setVisible(false);
                     lisaParemAlluv.setVisible(false);
@@ -352,8 +348,10 @@ public class AvlElemendiLisamine {
                     aktiivsedTipud.add(tipp);
                     if (aktiivsedTipud.size()==1){
                         visuaalneTipp.setFill(Color.GREEN);
-                        eemaldaVasakAlluv.setVisible(true);
-                        eemaldaParemAlluv.setVisible(true);
+                        if (tipp.vasak!=null)
+                            eemaldaVasakAlluv.setVisible(true);
+                        if (tipp.parem!=null)
+                            eemaldaParemAlluv.setVisible(true);
                     }else if (aktiivsedTipud.get(0).visuaalneTipp.getFill()==Color.GREEN){
                         visuaalneTipp.setFill(Color.RED);
                         lisaVasakAlluv.setVisible(true);

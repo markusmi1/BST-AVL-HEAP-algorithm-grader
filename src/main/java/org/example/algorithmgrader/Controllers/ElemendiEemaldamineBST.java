@@ -196,6 +196,7 @@ public class ElemendiEemaldamineBST {
             kustutaTipp.setVisible(false);
             Logija.logiViga(vead, logiFail);
             kuvaTeade("Läbimäng tehtud", "Vigu kokku: " + vigu);
+            laeEelnevPuu.setVisible(false);
             laeUusPuu.setVisible(true);
         }
 
